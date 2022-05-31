@@ -1,0 +1,67 @@
+<h1> {{title}}: {{roomName}}</h1>
+<a href="/" class="chat"><btn class="btn btn-chat">Return to Chatroom Directory</btn></a>
+
+<div id='display-msg'>
+    {{#each messages}}
+        <div class="post-box">
+            <h5>{{this.username}}</h5>
+            <h6> {{this.date}}</h6>
+            <p>{{this.text_msg}}</p>
+        </div>
+    {{/each}}
+</div>
+
+<form class="add-post" action="/newMsg" method="POST">
+<div class="reply-item">
+    <label for="name">Username</label>
+    <input type="text" name="username" placeholder="Please enter a username"/>
+</div>
+<div class="reply-item">
+    <label for="name">Message</label>
+    <input type="text" name="msg" placeholder="Write a new message..."/>
+</div>
+<input type="text" style="display:none" value={{roomName}} name="room_name"/>
+<input type="Submit" class="btn" value="Post"/>
+</form>
+
+
+<script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>
+<script>
+    window.addEventListener('load', function(){
+        let rm_name = {{roomName}};
+        let msgUrl = "http://localhost:3000//messages";
+        let fetchUrl = msgUrl.substring(0, 22)  + rm_name + msgUrl.substring(22, msgUrl.length);
+        console.log(fetchUrl);
+        setInterval(async function(){
+            fetch(fetchUrl)
+            .then(response => response.json())
+            .then(data =>{
+                var msgJson = data;
+                console.log(msgJson);
+
+                var div_element = document.getElementById('display-msg');
+                div_element.innerHTML = ""
+
+                for(var j =0;j<msgJson.length;j++){
+                    var postBox = document.createElement('div');
+                    postBox.classList.add("post-box");
+                    var user = document.createElement('h5');
+                    user.innerText = msgJson[j].username;
+                    console.log(msgJson[j].username);
+                    var date = document.createElement('h6');
+                    date.innerText = msgJson[j].date;
+                    console.log(msgJson[j].date);
+                    var content = document.createElement('p');
+                    content.innerText = msgJson[j].text_msg;
+                    console.log(msgJson[j].text_msg);
+                    postBox.appendChild(user);
+                    postBox.appendChild(date);
+                    postBox.appendChild(content);
+                    div_element.appendChild(postBox);
+                }
+            }).catch(err =>{
+                console.log("Error when rendering rooms", err);
+            });
+        }, 1000);
+    })
+</script>

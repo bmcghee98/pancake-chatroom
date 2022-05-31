@@ -1,19 +1,25 @@
 {
-  "name": "final-project-pancake-stack-overflow",
+  "name": "assignment4",
   "version": "1.0.0",
-  "description": "## Table of Contents - [Overview](#overview) - [Usage](#usage) - [How To Run](#how-to-run) - [Diagrams](#diagrams) - [Dependencies](#dependencies)",
-  "main": "index.js",
+  "description": "Stencil code for BrownCS1320 Assignment4",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/UCR-CS110/final-project-pancake-stack-overflow.git"
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/UCR-CS110/final-project-pancake-stack-overflow/issues"
+  "dependencies": {
+    "config": "^3.3.7",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "moment": "^2.29.3",
+    "mongoose": "^6.3.3"
   },
-  "homepage": "https://github.com/UCR-CS110/final-project-pancake-stack-overflow#readme"
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2",
+    "stylelint": "^13.2.0",
+    "stylelint-config-standard": "^20.0.0"
+  }
 }

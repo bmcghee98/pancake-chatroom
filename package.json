@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "config": "^3.3.7",
-    "cookie-parser": "^1.4.4",
+    "cookie-parser": "^1.4.6",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
     "moment": "^2.29.3",
@@ -21,5 +21,13 @@
     "nodemon": "^2.0.2",
     "stylelint": "^13.2.0",
     "stylelint-config-standard": "^20.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UCR-CS110/final-project-pancake-stack-overflow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UCR-CS110/final-project-pancake-stack-overflow/issues"
+  },
+  "homepage": "https://github.com/UCR-CS110/final-project-pancake-stack-overflow#readme"
 }

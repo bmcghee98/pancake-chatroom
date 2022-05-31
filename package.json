@@ -1,0 +1,19 @@
+{
+  "name": "final-project-pancake-stack-overflow",
+  "version": "1.0.0",
+  "description": "## Table of Contents - [Overview](#overview) - [Usage](#usage) - [How To Run](#how-to-run) - [Diagrams](#diagrams) - [Dependencies](#dependencies)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UCR-CS110/final-project-pancake-stack-overflow.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UCR-CS110/final-project-pancake-stack-overflow/issues"
+  },
+  "homepage": "https://github.com/UCR-CS110/final-project-pancake-stack-overflow#readme"
+}

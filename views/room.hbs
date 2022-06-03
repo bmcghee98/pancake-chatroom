@@ -1,28 +1,42 @@
-<h1> {{title}}: {{roomName}}</h1>
-<a href="/" class="chat"><btn class="btn btn-chat">Return to Chatroom Directory</btn></a>
+<input type="checkbox" id="check">
+<label for="check">
+    <i class="fa-solid fa-user-group" id="btn"></i>
+    <i class="fas fa-times" id="cancel"></i>
+</label>
+<div class="sidebar">
+    <header>Users</header>
+    <ul>
+        {{#each users}}
+            <li><a href="">{{this.name}}</a></li>
+        {{/each}}
+    </ul>
+</div>
+<section>
+    <h1> {{title}}: {{roomName}}</h1>
 
-<div id='display-msg'>
-    {{#each messages}}
-        <div class="post-box">
-            <h5>{{this.username}}</h5>
-            <h6> {{this.date}}</h6>
-            <p>{{this.text_msg}}</p>
-        </div>
-    {{/each}}
-</div>
+    <div id='display-msg'>
+        {{#each messages}}
+            <div class="post-box">
+                <h5>{{this.username}}</h5>
+                <h6> {{this.date}}</h6>
+                <p>{{this.text_msg}}</p>
+            </div>
+        {{/each}}
+    </div>
 
-<form class="add-post" action="/newMsg" method="POST">
-<div class="reply-item">
-    <label for="name">Username</label>
-    <input type="text" name="username" placeholder="Please enter a username"/>
-</div>
-<div class="reply-item">
-    <label for="name">Message</label>
-    <input type="text" name="msg" placeholder="Write a new message..."/>
-</div>
-<input type="text" style="display:none" value={{roomName}} name="room_name"/>
-<input type="Submit" class="btn" value="Post"/>
-</form>
+    <form class="add-post" action="/newMsg" method="POST">
+    <div class="reply-item">
+        <label for="name">Username</label>
+        <input type="text" name="username" placeholder="Please enter a username"/>
+    </div>
+    <div class="reply-item">
+        <label for="name">Message</label>
+        <input type="text" name="msg" placeholder="Write a new message..."/>
+    </div>
+    <input type="text" style="display:none" value={{roomName}} name="room_name"/>
+    <input type="Submit" class="btn" value="Post"/>
+    </form>
+</section>
 
 
 <script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>

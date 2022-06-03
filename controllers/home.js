@@ -9,6 +9,7 @@ function getHome(request, response, next){
   Rooms.find().lean().then(items =>{
     response.locals.rooms = items;
     response.locals.isAvailable = true;
+    response.locals.title = "Chatroom Directory";
     next();
   });
 }

@@ -34,7 +34,7 @@
         <label for="name">Message</label>
         <input type="text" name="msg" placeholder="Write a new message..."/>
     </div>
-    <input type="text" style="display:none" value={{roomName}} name="room_name"/>
+    <input type="text" style="display:none" value={{roomId}} name="room_id"/>
     <input type="Submit" class="btn" value="Post"/>
     </form>
 </section>
@@ -43,9 +43,9 @@
 <script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>
 <script>
     window.addEventListener('load', function(){
-        let rm_name = {{roomName}};
+        let rm_id = {{roomId}};
         let msgUrl = "http://localhost:3000//messages";
-        let fetchUrl = msgUrl.substring(0, 22)  + rm_name + msgUrl.substring(22, msgUrl.length);
+        let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
         console.log(fetchUrl);
         setInterval(async function(){
             fetch(fetchUrl)

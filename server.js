@@ -47,8 +47,8 @@ app.get("/getRoom", function(req,res){
 })
 
 //messages - return json of all rooms in the database
-app.get("/:roomName/messages", function(req,res){
-    Message.find({room_name: req.params.roomName}).lean().then(item => {
+app.get("/:roomId/messages", function(req,res){
+    Message.find({room_id: req.params.roomId}).lean().then(item => {
         res.json(item)
     })
 })
@@ -63,7 +63,7 @@ app.get("/getUsers", function(req,res){
 // Create controller handlers to handle requests at each endpoint
 app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
-app.get('/:roomName', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
+app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
 //Create endpoint- to create a new room in the database
 app.post("/create", function(req,res){
@@ -80,7 +80,7 @@ app.post("/newMsg", function(req,res){
         username: req.body.username,
         text_msg: req.body.msg,
         msg_id: roomIdGenerator.roomIdGenerator(),
-        room_name: req.body.room_name,
+        room_id: req.body.room_id,
         moment_data: moment(),
         date: moment().format("LLLL"),
     })

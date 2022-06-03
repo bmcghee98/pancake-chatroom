@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
-    room_name:{
+    room_id:{
         type: String,
         required: true,
     },

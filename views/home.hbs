@@ -27,7 +27,7 @@
         <div id='chat-directory'>
         {{#if isAvailable}}
             {{#each rooms}}
-                <a class="chat" href={{this.name}}><btn class="btn btn-chat">{{this.name}}</btn></a>
+                <a class="chat" href={{this.id}}><btn class="btn btn-chat">{{this.name}}</btn></a>
             {{/each}}
         {{/if}}
         </div>
@@ -52,7 +52,7 @@
                 for(var j =0;j<roomJson.length;j++){
                     {{!-- console.log(roomJson[j].name) --}}
                     var a = document.createElement('a');
-                    a.href = roomJson[j].name;
+                    a.href = roomJson[j].id;
                     a.classList.add("chat");
                     var btn_element = document.createElement('btn');
                     var btnTxt = roomJson[j].name;

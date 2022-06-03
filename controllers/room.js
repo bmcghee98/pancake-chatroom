@@ -1,14 +1,22 @@
 // Controller handler to handle functionality in room page
 
 const Messages = require("../models/Messages");
+const Rooms = require("../models/Rooms");
 // Example for handle a get request at '/:roomName' endpoint.
 function getRoom(request, response, next){
-    Messages.find({room_name: request.params.roomName}).lean().then(items =>{
-        response.locals.messages = items;
-        response.locals.title = "Chatroom";
-        response.locals.roomName = request.params.roomName;
-        next();
-        // response.render('room', {title: 'Chatroom', roomName: request.params.roomName, messages: items});
+    let roomname = "";
+    Rooms.findOne({id: request.params.roomId}).lean().then(item =>{
+        if(item){
+            roomname = item.name;
+            console.log("roomname found:", roomname);
+            Messages.find({room_id: request.params.roomId}).lean().then(items =>{
+                response.locals.title = "Chatroom";
+                response.locals.roomId = request.params.roomId;
+                response.locals.messages = items;
+                response.locals.roomName = roomname;
+                next();
+            });
+        }
     });
 }
 

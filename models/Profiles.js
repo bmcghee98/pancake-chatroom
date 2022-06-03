@@ -7,11 +7,7 @@ const ProfileSchema = new Schema({
         type: String,
         required: true,
     },
-    first_name:{
-        type: String,
-        required: true,
-    },
-    last_name:{
+    name:{
         type: String,
         required: true,
     },
@@ -23,7 +19,7 @@ const ProfileSchema = new Schema({
         type: String,
         required: true,
     },
-    id:{
+    user_id:{
         type: String,
         required: true,
     }

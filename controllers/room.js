@@ -8,7 +8,7 @@ function getRoom(request, response, next){
     Rooms.findOne({id: request.params.roomId}).lean().then(item =>{
         if(item){
             roomname = item.name;
-            console.log("roomname found:", roomname);
+            // console.log("roomname found:", roomname);
             Messages.find({room_id: request.params.roomId}).lean().then(items =>{
                 response.locals.title = "Chatroom";
                 response.locals.roomId = request.params.roomId;

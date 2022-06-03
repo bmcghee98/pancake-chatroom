@@ -339,3 +339,16 @@ section{
   padding: 20px 40px 40px 40px;
   border: 2px solid #AD7652;
 }
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #e49f67 inset !important;
+}
+
+/*Change text in autofill textbox*/
+input:-webkit-autofill{
+  -webkit-text-fill-color: #654E3A !important;
+}

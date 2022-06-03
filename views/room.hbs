@@ -1,4 +1,3 @@
-<a href="/" class="return"><i class="fas fa-undo"></i></a>
 <input type="checkbox" id="check">
 <label for="check">
     <i class="fa-solid fa-user-group" id="btn"></i>
@@ -8,7 +7,15 @@
     <header>Users</header>
     <ul>
         {{#each users}}
-            <li><a href="">{{this.name}}</a></li>
+            <li>
+                <a href="">
+                    <div class="sidebar-container">
+                        {{this.name}}
+                    </div>
+                    <div class="sidebar-username">
+                        {{this.username}}
+                    </div>
+                </a></li>
         {{/each}}
     </ul>
 </div>

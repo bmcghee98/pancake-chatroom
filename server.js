@@ -63,6 +63,7 @@ app.get("/getUsers", function(req,res){
 // Create controller handlers to handle requests at each endpoint
 app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
+app.get('/login', (req,res)=> res.render('login'));
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
 //Create endpoint- to create a new room in the database

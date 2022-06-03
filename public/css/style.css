@@ -211,6 +211,13 @@ h6 {
   height: 100%;
   background: #D67C3E;
   top: 0px;
+  overflow-y: scroll;
+}
+
+.sidebar-username{
+  margin-top:-40px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .sidebar header{

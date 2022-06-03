@@ -59,7 +59,7 @@ body {
   
 .add-post {
   margin: 40px;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #654E3A;
   padding: 10px;
 }
     
@@ -99,7 +99,7 @@ h2 {
 }
  
 h5 {
-  color:#3A66AA;
+  color:#b64846;
   padding: 5px 0 0 0;
 }
  
@@ -120,6 +120,10 @@ h5 {
   margin: 5px;
   padding: 3px 7px;
   font-size: 17px;
+  background-color:#e49f67;
+  border:0;
+  outline:0;
+  color: #654E3A;
 }
 
 #display-msg {
@@ -164,7 +168,6 @@ h6 {
   padding: 5px;
   width: 100%;
 }
-
 .register-btn{
   background: #FFC699;
   color: #956339;

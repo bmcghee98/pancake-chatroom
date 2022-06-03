@@ -12,8 +12,15 @@
     </ul>
 </div>
 <section>
-    <h1> Chatroom Directory </h1>
+    <form class = "mainPost" action="/create" method="POST">
+    <label class="post-item chat-label"><h1>Create New Chatroom</h1></label>
+    <div class="post-item">
+        <input class="chat-name"type="text" name="roomName" placeholder="Please enter a room name"/>
+        <input class="btn chat-submit" type="Submit" value="Create New Room"/>
+    </div>
+    </form>
 
+    <h1> Chatroom Directory </h1>
     <div id='chat-directory'>
     {{#if isAvailable}}
         {{#each rooms}}
@@ -22,13 +29,6 @@
     {{/if}}
     </div>
 
-    <form class = "mainPost" action="/create" method="POST">
-    <label class="post-item chat-label"><h2>Create New Chatroom</h2></label>
-    <div class="post-item">
-        <input class="chat-name"type="text" name="roomName" placeholder="Please enter a room name"/>
-        <input class="btn chat-submit" type="Submit" value="Create New Room"/>
-    </div>
-    </form>
 </section>
 
 <script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>

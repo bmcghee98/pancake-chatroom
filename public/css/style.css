@@ -75,6 +75,10 @@ div.post-item{
 }
 
 .chat-name{
+  background-color:#e49f67;
+  border:0;
+  outline:0;
+  color: #654E3A;
   width: 75%;
 }
 .chat-submit{

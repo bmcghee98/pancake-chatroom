@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const config = require('config');
 const Room = require("./models/Rooms")
 const Message = require("./models/Messages")
+const Profile = require("./models/Profiles")
 const moment = require('moment');
 // import handlers
 const homeHandler = require('./controllers/home.js');
@@ -37,10 +38,6 @@ mongoose.connect(db, //connect to database
         console.log("Connected to MongoDB")
     })
 
-// set up stylesheets route
-
-// TODO: Add server side code
-
 //getRoom - return json of all rooms in the database
 app.get("/getRoom", function(req,res){
     Room.find().lean().then(item => {
@@ -55,8 +52,17 @@ app.get("/:roomName/messages", function(req,res){
     })
 })
 
+//return json of all users in the database
+app.get("/getUsers", function(req,res){
+    Profile.find().lean().then(item => {
+        res.json(item)
+    })
+})
+
 // Create controller handlers to handle requests at each endpoint
 app.get('/', homeHandler.getHome);
+//controller handler for new profile
+app.get('/register', (req,res)=> res.render('profile'));
 app.get('/:roomName', roomHandler.getRoom);
 
 //Create endpoint- to create a new room in the database
@@ -80,6 +86,19 @@ app.post("/newMsg", function(req,res){
     })
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
+});
+
+//endpoint to create new profile
+app.post("/newProfile", function(req,res){
+    const newProfile = new Profile({
+        username: req.body.username,
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        user_id: roomIdGenerator.roomIdGenerator(),
+    })
+    newProfile.save().then(console.log("New Profile has been created")).catch(err=>console.log("Error when creating new profile", err));
+    res.redirect('/login');
 });
 
 

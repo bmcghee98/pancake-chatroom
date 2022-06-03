@@ -126,3 +126,73 @@ h5 {
 h6 {
   padding: 5px 0px;
 }
+
+
+
+/*Register Form Styling*/
+.register-body{
+  background-color:#F3D09E;
+}
+.register-container {
+  background-color: #CA9C75;
+  padding: 50px;
+  margin: 50px;
+}
+
+.register-container h1{
+  color: #654E3A;
+}
+
+.register-div {
+  margin: 20px 10px;
+}
+
+.register-label {
+  color: white;
+  display: block;
+  padding-bottom: 5px;
+}
+
+.register-input {
+  background-color:#FFC699;
+  border:0;
+  outline:0;
+  color: #654E3A;
+  padding: 5px;
+  width: 100%;
+}
+
+.register-btn{
+  background: #FFC699;
+  color: #956339;
+  font-weight: bold;
+  margin: auto;
+  padding: 10px;
+  width: 200px;
+}
+
+.register-btn:hover{
+  background: #eea771;
+
+}
+.register-btn:active{
+  background: #f2a061;
+
+}
+
+.register-redirect{
+  text-align: center;
+  text-decoration: none;
+}
+
+.register-redirect:active{
+  color:#956339;
+}
+
+.register-redirect:visited{
+  color:#7b4e29;
+}
+
+.register-link{
+  text-align: center;
+}

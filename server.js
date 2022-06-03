@@ -11,6 +11,7 @@ const Profile = require("./models/Profiles")
 const moment = require('moment');
 // import handlers
 const homeHandler = require('./controllers/home.js');
+const profileHandler = require('./controllers/profile.js');
 const roomHandler = require('./controllers/room.js');
 const roomIdGenerator = require('./util/roomIdGenerator');
 
@@ -60,10 +61,9 @@ app.get("/getUsers", function(req,res){
 })
 
 // Create controller handlers to handle requests at each endpoint
-app.get('/', homeHandler.getHome);
-//controller handler for new profile
+app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
-app.get('/:roomName', roomHandler.getRoom);
+app.get('/:roomName', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
 //Create endpoint- to create a new room in the database
 app.post("/create", function(req,res){

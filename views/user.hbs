@@ -22,16 +22,22 @@
 <section>
     <div class="register-container user-profile">
         <h1>User Profile</h1>
-        <h1>{{user.name}}</h1>
-        <h2>{{user.username}}</h2>
-        <h2>{{user.email}}</h2>
+            <div class="user-container">
+                {{user.name}}
+            </div>
+            <div class="user-username">
+                {{user.username}}
+            </div>
+            <div class="user-email">
+                {{user.email}}
+            </div>
     </div>
     <div class="register-container recent-activity">
         <h1>Recent Activity</h1>
-        <div id='display-msg'>
+        <div id='display-user-msg'>
             {{#each messages}}
                 <a href='/{{this.room_id}}'>
-                    <div class="post-box">
+                    <div class="post-box recent-msg">
                         <h5>{{this.username}}</h5>
                         <h6> {{this.date}}</h6>
                         <p>{{this.text_msg}}</p>

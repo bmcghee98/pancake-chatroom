@@ -65,7 +65,7 @@ app.get("/getUsers", function(req,res){
 app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
 app.get('/login', (req,res)=> res.render('login'));
-app.get('/user/:userId', profileHandler.getProfile, userHandler.getMessages, userHandler.getUser);
+app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser, userHandler.renderUser);
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
 //profileHandler.findUser, profileHandler.getProfile, profileHandler.renderUser);
@@ -88,7 +88,6 @@ app.post("/newMsg", function(req,res){
         moment_data: moment(),
         date: moment().format("LLLL"),
     })
-    console.log("user_id: ", Profile.findOne(user))
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
 });

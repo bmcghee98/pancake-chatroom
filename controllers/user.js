@@ -4,12 +4,19 @@ const Messages = require("../models/Messages");
 function getUser(req, res, next) {
     Profiles.findOne({user_id: req.params.userId}).lean().then(item =>{
         res.locals.user = item;
-        console.log("user found: ", item.username)
+        console.log("user found:", item.username)
+        next();
+    });
+};
+
+function getUserMessages(req, res, next) {
+    Profiles.findOne({user_id: req.params.userId}).lean().then(item =>{
+        console.log("user found for messages:",item.username)
         Messages.find({username: item.username}).lean().then(items =>{
             res.locals.messages = items;
             console.log("messages found", items)
+            next();
         });
-        next();
     });
 };
 
@@ -19,5 +26,5 @@ function renderUser(req,res){
 
 
 module.exports = {
-    getUser, renderUser
+    getUser, getUserMessages, renderUser
 };

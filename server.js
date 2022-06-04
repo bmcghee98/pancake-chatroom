@@ -65,7 +65,7 @@ app.get("/getUsers", function(req,res){
 app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
 app.get('/login', (req,res)=> res.render('login'));
-app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser, userHandler.renderUser);
+app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser,userHandler.getUserMessages, userHandler.renderUser);
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
 //profileHandler.findUser, profileHandler.getProfile, profileHandler.renderUser);

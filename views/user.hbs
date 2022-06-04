@@ -28,6 +28,15 @@
     </div>
     <div class="register-container recent-activity">
         <h1>Recent Activity</h1>
+        <div id='display-msg'>
+            {{#each messages}}
+                <div class="post-box">
+                    <h5>{{this.username}}</h5>
+                    <h6> {{this.date}}</h6>
+                    <p>{{this.text_msg}}</p>
+                </div>
+            {{/each}}
+        </div>
     </div>
 </section>
 

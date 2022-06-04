@@ -85,7 +85,6 @@ app.post("/newMsg", function(req,res){
         text_msg: req.body.msg,
         msg_id: roomIdGenerator.roomIdGenerator(),
         room_id: req.body.room_id,
-        moment_data: moment(),
         date: moment().format("LLLL"),
     })
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));

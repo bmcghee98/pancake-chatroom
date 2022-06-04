@@ -12,7 +12,7 @@ function getUser(req, res, next) {
 function getUserMessages(req, res, next) {
     Profiles.findOne({user_id: req.params.userId}).lean().then(item =>{
         console.log("user found for messages:",item.username)
-        Messages.find({username: item.username}).lean().then(items =>{
+        Messages.find({username: item.username}).sort({date :-1}).lean().then(items =>{
             res.locals.messages = items;
             console.log("messages found", items)
             next();

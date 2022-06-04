@@ -9,10 +9,12 @@
         {{#each users}}
             <li>
                 <a href="">
-                    <div class="sidebar-container">
+                   <div class="sidebar-container">
+                        {{this.name}}
+                    </div>
+                    <div class="sidebar-username">
                         {{this.username}}
                     </div>
-                    
                 </a></li>
         {{/each}}
     </ul>

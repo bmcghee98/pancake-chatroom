@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<div class="register-container">
+            <h1>Change Password</h1>
+            <form class="register-form" id="reg-form">
+            <div class="register-div">
+                <label class="register-label" for="password">Password</label>
+                <input class="register-input" type="password" id="password" name="password" required>
+            </div>
+            <div class="register-div">
+                <button class="btn register-btn" type="submit">Update</button>
+            </div>
+            </form>
+        </div>
+		
+        <script>
+            const form = document.getElementById("reg-form");
+            form.addEventListener("submit", changePassword);
+
+            async function changePassword(event) {
+                //username not required
+                const password = document.getElementById("password").value
+
+                const result = await fetch("/api/change-password", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        newpassword: password,
+                        token: localStorage.getItem("token")
+                    })
+                }).then((res) => res.json())
+
+                if (result.status === "ok") {
+                    alert("success")
+                } else {
+                    alert(result.error);
+                }
+            }
+        </script>
+    </body>
+</html>

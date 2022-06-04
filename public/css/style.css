@@ -335,6 +335,17 @@ section{
   transform: translate(-50%, 10px);
 }
 
+.login i {
+  position:fixed;
+  color: #654E3A;
+  z-index: 1000;
+  top:0px;
+  font-size: 24px;
+  padding: 6px 12px;
+  left: 95%;
+  transform: translate(-50%, 8px);
+}
+
 .return{
   position:fixed;
   z-index: 1000;

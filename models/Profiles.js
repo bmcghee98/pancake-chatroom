@@ -7,7 +7,7 @@ const ProfileSchema = new Schema({
         type: String,
         required: true,
     },
-    name:{
+    _name:{ //"name" is deprecated??
         type: String,
         required: true,
     },

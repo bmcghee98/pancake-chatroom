@@ -374,3 +374,16 @@ input:-webkit-autofill:active{
 input:-webkit-autofill{
   -webkit-text-fill-color: #654E3A !important;
 }
+
+#search_bar{
+  position: absolute;
+  right: 0;
+  margin-right: 100px;
+  margin-top: -30px;
+}
+
+input[type=search] {
+  width: 15%;
+  -webkit-transition: width 0.15s ease-in-out;
+  transition: width 0.15s ease-in-out;
+}

@@ -169,7 +169,7 @@ app.post("/api/login", async(req, res) => {
 app.post("/api/register", async (req, res) => {
     console.log(req.body);
     const username = req.body.username
-    const _name = req.body.name;
+    const name = req.body.name;
     const email = req.body.email;
     const {password: plainTextPassword} = req.body
     const user_id = roomIdGenerator.roomIdGenerator()
@@ -192,7 +192,7 @@ app.post("/api/register", async (req, res) => {
     try{
         await Profile.create({
             username,
-            _name,
+            name,
             password,
             email,
             user_id

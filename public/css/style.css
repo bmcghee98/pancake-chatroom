@@ -374,3 +374,28 @@ input:-webkit-autofill:active{
 input:-webkit-autofill{
   -webkit-text-fill-color: #654E3A !important;
 }
+
+.user-profile{
+  text-align: center;
+  font-weight: bold;
+}
+
+.user-container{
+  font-size: 30px;
+  color:#4f4032;
+  margin: 15px 0 5px 0;
+}
+.user-username{
+  font-size: 15px;
+  margin: 15px 0 5px 0;
+}
+
+#display-user-msg a:active, a:visited{
+  color:#000000;
+}
+
+.recent-msg{
+  padding-bottom: 10px;
+  margin: 10px 0 6px 0;
+  border-bottom: 1px solid #a37c5a;
+}

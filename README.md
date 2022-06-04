@@ -1,4 +1,4 @@
 # Final Project
 
 ## Project Description
-Panchake Stack Overflow Chatroom
+Pancake Stack Overflow Chatroom

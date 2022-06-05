@@ -389,15 +389,6 @@ input:-webkit-autofill{
   border-bottom: 1px solid #a37c5a;
 }
 
-.list-item{
-  display: flex;
-  flex-direction: row;
-}
-
-.reply{
-  padding-left: 20px;
-}
-
 .p1{
   margin: 10px;
 }

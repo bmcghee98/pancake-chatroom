@@ -28,11 +28,9 @@
                 <h5>{{this.username}}</h5>
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
-                <div className='list-item'>
-                    <input type="submit" onclick="downVote()" value="UP" name="vote"/>
-                    <p1>0{{this.vote}}</p1>
-                    <input type="submit" value="DOWN" name="vote"/>
-                </div>
+                <input type="submit" onclick="upVote()" value="UP"/>
+                <p1>{{this.vote}}</p1>
+                <input type="submit" onclick="downVote()" value="DOWN"/>
             </div>
         {{/each}}
     </div>
@@ -55,7 +53,7 @@
 <script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>
 <script>
     window.addEventListener('load', function(){
-        let rm_id = {{roomId}};
+        let rm_id = '{{roomId}}';
         let msgUrl = "http://localhost:3000//messages";
         let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
         console.log(fetchUrl);
@@ -81,13 +79,25 @@
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
                     console.log(msgJson[j].text_msg);
+                    let upVote = document.createElement("button");
+                    upVote.innerHTML = "UP";
                     var vote = document.createElement('p1');
-                    content.innerText = msgJson[j].vote;
+                    vote.innerText = msgJson[j].vote;
                     console.log(msgJson[j].vote);
+                    let downVote = document.createElement("button");
+                    downVote.innerHTML = "DOWN";
+                    upVote.onclick = function () {
+                        vote = vote + 1;
+                    };
+                    downVote.onclick = function () {
+                        vote = vote - 1;
+                    };
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
+                    postBox.appendChild(upVote);
                     postBox.appendChild(vote);
+                    postBox.appendChild(downVote);
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
@@ -95,12 +105,4 @@
             });
         }, 1000);
     })
-</script>
-
-<script>
-function downVote() {
-  window.addEventListener('load', function(){
-      console.log(this.vote);
-  })
-}
 </script>

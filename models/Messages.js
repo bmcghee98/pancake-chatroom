@@ -19,10 +19,6 @@ const MessageSchema = new Schema({
         type: String,
         required: true,
     },
-    moment_data:{
-        type: String,
-        required: true,
-    },
     date:{
         type: String,
         required: true,

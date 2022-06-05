@@ -79,19 +79,15 @@
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
                     console.log(msgJson[j].text_msg);
-                    let upVote = document.createElement("button");
+                    var upVote = document.createElement("button");
                     upVote.innerHTML = "UP";
                     var vote = document.createElement('p1');
                     vote.innerText = msgJson[j].vote;
                     console.log(msgJson[j].vote);
-                    let downVote = document.createElement("button");
+                    var downVote = document.createElement("button");
                     downVote.innerHTML = "DOWN";
-                    upVote.onclick = function () {
-                        vote = vote + 1;
-                    };
-                    downVote.onclick = function () {
-                        vote = vote - 1;
-                    };
+                    upVote.onclick = upVote;
+                    downVote.onclick = downVote;
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
@@ -103,6 +99,14 @@
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
-        }, 1000);
+        }, 2000);
     })
+
+    function upVote() {
+        vote = vote + 1;
+    }
+
+    function downVote() {
+        vote = vote - 1;
+    }
 </script>

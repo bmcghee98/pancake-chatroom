@@ -28,6 +28,11 @@
                 <h5>{{this.username}}</h5>
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
+                <div className='list-item'>
+                    <input type="submit" onclick="downVote()" value="UP" name="vote"/>
+                    <p1>0{{this.vote}}</p1>
+                    <input type="submit" value="DOWN" name="vote"/>
+                </div>
             </div>
         {{/each}}
     </div>
@@ -76,9 +81,13 @@
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
                     console.log(msgJson[j].text_msg);
+                    var vote = document.createElement('p1');
+                    content.innerText = msgJson[j].vote;
+                    console.log(msgJson[j].vote);
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
+                    postBox.appendChild(vote);
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
@@ -86,4 +95,12 @@
             });
         }, 1000);
     })
+</script>
+
+<script>
+function downVote() {
+  window.addEventListener('load', function(){
+      console.log(this.vote);
+  })
+}
 </script>

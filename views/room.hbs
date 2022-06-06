@@ -29,7 +29,7 @@
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
             </div>
-            <button onClick="upVote(`{{this.username}}`, {{this.vote}})">Up</button>
+            <button onClick="upVote(`{{this.msg_id}}`, {{this.vote}})">Up</button>
            {{this.vote}}
         {{/each}}
     </div>
@@ -86,9 +86,9 @@
             });
         }, 1000);
     })  --}}
-    function upVote(userSelected, currVal){
+    function upVote(msgSelected, currVal){
         const incVal = currVal+1;
-        console.log("userSelected: ", userSelected);
+        console.log("msgSelected: ", msgSelected);
         console.log("upVal: ", incVal);
         console.log("upVote clicked");
         const result = fetch("/vote", {

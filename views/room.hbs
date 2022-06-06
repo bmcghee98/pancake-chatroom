@@ -66,7 +66,7 @@
             .then(response => response.json())
             .then(data =>{
                 var msgJson = data;
-                console.log(msgJson);
+                //console.log(msgJson);
 
                 var div_element = document.getElementById('display-msg');
                 div_element.innerHTML = ""
@@ -116,15 +116,68 @@
                     //console.log(msgJson[j].username);
                     //console.log(msgJson[j].date);
                     //console.log(msgJson[j].text_msg);
+                    let upBlock = document.getElementsByClassName("up_block");
+                    let downBlock = document.getElementsByClassName("down_block");
+    
+                    function upVote(msgSelected){
+                        console.log("msgSelected: ", msgSelected);
+                        let currVal = 0;
+                        let incVal = 0;
+                        fetch(fetchUrl)
+                            .then(response => response.json())
+                            .then(data =>{
+                                var msgJson = data;
+                                {{!-- console.log(msgJson) --}}
+                                for(var j =0;j<msgJson.length;j++){
+                                    if(msgJson[j].msg_id == msgSelected){
+                                        currVal = msgJson[j].vote;
+                                        console.log("currVal: ", currVal)
+                                    }
+                                }
+                                incVal = currVal+1;
+                                console.log("incVal: ", incVal);
+                                {{!-- const result = fetch("/vote", {
+                                            method: "POST",
+                                            body: JSON.stringify({
+                                                msgSelected, incVal
+                                            })
+                                }).then((res) => res.json()) --}}
+                            })
+                    }
+
+                    function downVote(msgSelected){
+                        console.log("downVote clicked");
+                        console.log("msgSelected: ", msgSelected);
+                        {{!-- const result = fetch("/vote", {
+                                    method: "POST",
+                                    body: JSON.stringify({
+                                        msgSelected, decVal
+                                    })
+                        }).then((res) => res.json()) --}}
+                    }
+
+                    Array.from(upBlock).forEach(function(upBlock) {
+                        upBlock.addEventListener('click', function(){
+                            const msgTemp = upBlock.getElementsByClassName("id_msg")
+                            upVote(msgTemp[0].innerText)
+                        })
+                    });
+
+                    Array.from(downBlock).forEach(function(downBlock) {
+                        downBlock.addEventListener('click', function(){
+                            const msgTemp = downBlock.getElementsByClassName("id_msg")
+                            downVote(msgTemp[0].innerText)
+                        })
+                    });
                 }
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
         }, 1000);
     }) 
-    
-    const upBlock = document.getElementsByClassName("up_block");
-    const downBlock = document.getElementsByClassName("down_block");
+
+    let upBlock = document.getElementsByClassName("up_block");
+    let downBlock = document.getElementsByClassName("down_block");
     
     function upVote(msgSelected){
         console.log("msgSelected: ", msgSelected);

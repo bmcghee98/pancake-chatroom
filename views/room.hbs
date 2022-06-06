@@ -29,8 +29,15 @@
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
             </div>
-            <button onClick="upVote(`{{this.msg_id}}`, {{this.vote}})">Up</button>
-           {{this.vote}}
+            <div class="up_block">
+                <button class="up_btn">Up</button>
+                <span class="id_msg" style="display:none">{{this.msg_id}}</span>
+            </div>
+                <p1 class = "vote_cnt">{{this.vote}}</p1>
+            <div class="down_block">
+                <span class="id_msg" style="display:none">{{this.msg_id}}</span>
+                <button class="down_btn">Down</button>
+            </div>
         {{/each}}
     </div>
 
@@ -49,12 +56,12 @@
 </section>
 
 <script>
-    {{!-- window.addEventListener('load', function(){
-        let rm_id = {{roomId}};
-        let msgUrl = "http://localhost:3000//messages";
-        let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
-        console.log(fetchUrl);
-        setInterval(async function(){
+    let rm_id = '{{roomId}}';
+    let msgUrl = "http://localhost:3000//messages";
+    let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
+    console.log(fetchUrl);
+    window.addEventListener('load', function(){
+        setTimeout(async function(){
             fetch(fetchUrl)
             .then(response => response.json())
             .then(data =>{
@@ -85,17 +92,59 @@
                 console.log("Error when rendering rooms", err);
             });
         }, 1000);
-    })  --}}
-    function upVote(msgSelected, currVal){
-        const incVal = currVal+1;
+    }) 
+    
+    const upBlock = document.getElementsByClassName("up_block");
+    const downBlock = document.getElementsByClassName("down_block");
+    
+    function upVote(msgSelected){
         console.log("msgSelected: ", msgSelected);
-        console.log("upVal: ", incVal);
-        console.log("upVote clicked");
-        const result = fetch("/vote", {
+        let currVal = 0;
+        let incVal = 0;
+        fetch(fetchUrl)
+            .then(response => response.json())
+            .then(data =>{
+                var msgJson = data;
+                {{!-- console.log(msgJson) --}}
+                for(var j =0;j<msgJson.length;j++){
+                    if(msgJson[j].msg_id == msgSelected){
+                        currVal = msgJson[j].vote;
+                        console.log("currVal: ", currVal)
+                    }
+                }
+                incVal = currVal+1;
+                console.log("incVal: ", incVal);
+                {{!-- const result = fetch("/vote", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                msgSelected, incVal
+                            })
+                }) --}}
+            })
+    }
+
+    function downVote(msgSelected){
+        console.log("downVote clicked");
+        console.log("msgSelected: ", msgSelected);
+        {{!-- const result = fetch("/vote", {
                     method: "POST",
                     body: JSON.stringify({
-                        msgSelected, incVal
+                        msgSelected, decVal
                     })
-        })
+        }) --}}
     }
+
+    Array.from(upBlock).forEach(function(upBlock) {
+        upBlock.addEventListener('click', function(){
+            const msgTemp = upBlock.getElementsByClassName("id_msg")
+            upVote(msgTemp[0].innerText)
+        })
+    });
+
+    Array.from(downBlock).forEach(function(downBlock) {
+        downBlock.addEventListener('click', function(){
+            const msgTemp = downBlock.getElementsByClassName("id_msg")
+            downVote(msgTemp[0].innerText)
+        })
+    });
 </script>

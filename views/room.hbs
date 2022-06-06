@@ -28,11 +28,9 @@
                 <h5>{{this.username}}</h5>
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
-                {{!--<input type="submit" id="upvote" value="UP"/>
-                <p1>{{this.vote}}</p1>--}}
                 <button onClick="upVote(`{{this.msg_id}}`, {{this.vote}})">Up</button>
                 {{this.vote}}
-                <input type="submit" id="downvote" value="DOWN"/>
+                <button onClick="downVote(`{{this.msg_id}}`, {{this.vote}})">Down</button>
             </div>
         {{/each}}
     </div>
@@ -60,24 +58,6 @@
         let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
         console.log(fetchUrl);
 
-        //const form = document.getElementById("upvote"); //add an ID to the upvote button first
-
-           // form.addEventListener("submit", upVote);
-            /*async function upVote(event) {
-                const vote = 1;
-               
-                
-                const result = await fetch("/vote", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        vote
-                    })
-                }).then((res) => res.json())
-            }*/
-
         setInterval(async function(){
             fetch(fetchUrl)
             .then(response => response.json())
@@ -88,7 +68,7 @@
                 var div_element = document.getElementById('display-msg');
                 div_element.innerHTML = ""
 
-                for(var j =0;j<msgJson.length;j++){
+                for(let j =0;j<msgJson.length;j++){
                     var postBox = document.createElement('div');
                     postBox.classList.add("post-box");
                     var user = document.createElement('h5');
@@ -100,14 +80,14 @@
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
                     console.log(msgJson[j].text_msg);
-                    var upV = document.createElement("button");
-                    upV.innerHTML = "UP"
                     var vote = document.createElement('p1');
                     vote.innerText = msgJson[j].vote;
+                    var upV = document.createElement("button");
+                    upV.addEventListener("click", () => { upVote(msgJson[j].text_msg, msgJson[j].vote) });
+                    upV.innerText = "UP"
                     console.log(msgJson[j].vote);
                     var downV = document.createElement("button");
-                    downV.innerHTML = "DOWN"
-                    upV.onclick = upVote;
+                    downV.innerText = "DOWN";
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
@@ -119,17 +99,34 @@
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
-        }, 1000);
+        }, 5000);
     })
-    function upVote(msgSelected, currVal){
-        const incVal = currVal+1;
+   async function upVote(msgSelected, currVal){
+        const inc = currVal+1;
         console.log("msgSelected: ", msgSelected);
-        console.log("upVal: ", incVal);
+        console.log("upVal: ", inc);
         console.log("upVote clicked");
+        const result =  await fetch("/vote", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        msgSelected, inc
+                    })
+                   
+        })
+        .then(response => response.json())
+        .catch(error => {
+            //handle error
+        });
+    }
+    function downVote(msgSelected, currVal){
+        const dec = currVal-1;
+        console.log("msgSelected: ", msgSelected);
+        console.log("downVal: ", dec);
+        console.log("downVote clicked");
         const result = fetch("/vote", {
                     method: "POST",
                     body: JSON.stringify({
-                        msgSelected, incVal
+                        msgSelected, dec
                     })
         })
     }

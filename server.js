@@ -2,6 +2,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const hbs = require('express-handlebars');
+const asyncHandler = require('express-async-handler')
 const path = require('path');
 const mongoose = require('mongoose');
 const config = require('config');
@@ -16,6 +17,7 @@ const roomHandler = require('./controllers/room.js');
 const roomIdGenerator = require('./util/roomIdGenerator');
 const userHandler = require('./controllers/user.js');
 const Messages = require('./models/Messages');
+const { update } = require('./models/Messages');
 
 const app = express();
 const port = 3000;
@@ -87,7 +89,7 @@ app.post("/newMsg", function(req,res){
         msg_id: roomIdGenerator.roomIdGenerator(),
         room_id: req.body.room_id,
         date: moment().format("LLLL"),
-        vote: 0,
+        vote: 2,
     })
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
@@ -106,24 +108,44 @@ app.post("/newProfile", function(req,res){
     res.redirect('/login');
 });
 
-app.post("/vote", function(req,res){
+app.post("/vote",  asyncHandler(async (req,res) => {
     const vote = req.body.vote;
+    const newVote = req.body;
 
-    Message.find({room_id: req.params.roomId}).lean().then(item => {
-        //res.json(item)
+    console.log("vote amount: " , newVote);
+
+    // Message.find({room_id: req.params.roomId}).lean().then(item => {
+    //     res.json(item)
+    //     //res.send(newVote);
+    //     //update message schema
+    //     // const newMessage = new Message({
+    //     //     username: req.body.username,
+    //     //     text_msg: req.body.msg,
+    //     //     msg_id: roomIdGenerator.roomIdGenerator(),
+    //     //     room_id: req.body.room_id,
+    //     //     date: moment().format("LLLL"),
+    //     //     vote: 0,
+    //     // })
+    // })
+
+    console.log("msg id", req.params.msgId)
+
+    let updateVote =  Message.findOneAndUpdate(
+        { msg_id: req.params.msgId },
+        {
+            username: req.body.username,
+            text_msg: req.body.msg,
+            msg_id: roomIdGenerator.roomIdGenerator(),
+            room_id: req.body.room_id,
+            date: moment().format("LLLL"),
+            vote: 0,
+        },
         
-    })
+    );
 
-    /*for (let i = 0; i < Message.length; i++) {
-        let msg = Message[i];
+   
 
-        if(Message.msg_id === msg_id) {
-            res.send(vote + 1);
-            return;
-        }
-    }*/
-    res.send('Voted');
-});
+}));
 
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures

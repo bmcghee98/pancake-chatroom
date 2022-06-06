@@ -31,11 +31,11 @@
             </div>
             <div class="up_block">
                 <button class="up_btn">Up</button>
-                <span class="id_msg" style="display:none">{{this.msg_id}}</span>
+                <span class="id_msg">{{this.msg_id}}</span>
             </div>
-                <p1 class = "vote_cnt">{{this.vote}}</p1>
+            <p1 class = "vote_cnt">{{this.vote}}</p1>
             <div class="down_block">
-                <span class="id_msg" style="display:none">{{this.msg_id}}</span>
+                <span class="id_msg">{{this.msg_id}}</span>
                 <button class="down_btn">Down</button>
             </div>
         {{/each}}
@@ -59,7 +59,7 @@
     let rm_id = '{{roomId}}';
     let msgUrl = "http://localhost:3000//messages";
     let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
-    console.log(fetchUrl);
+    {{!-- console.log(fetchUrl); --}}
     window.addEventListener('load', function(){
         setTimeout(async function(){
             fetch(fetchUrl)
@@ -76,17 +76,46 @@
                     postBox.classList.add("post-box");
                     var user = document.createElement('h5');
                     user.innerText = msgJson[j].username;
-                    console.log(msgJson[j].username);
                     var date = document.createElement('h6');
                     date.innerText = msgJson[j].date;
-                    console.log(msgJson[j].date);
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
-                    console.log(msgJson[j].text_msg);
+                    
+                    var upBox = document.createElement('div');
+                    upBox.classList.add("up_block");
+                    var upB = document.createElement('button');
+                    upB.classList.add("up_btn")
+                    upB.innerText = "Up"
+                    var spanMsg = document.createElement('span');
+                    spanMsg.classList.add("id_msg");
+                    spanMsg.innerText = msgJson[j].msg_id;
+                    upBox.appendChild(upB);
+                    upBox.appendChild(spanMsg);
+
+                    var voteBox = document.createElement('p1');
+                    voteBox.classList.add("vote_cnt");
+                    voteBox.innerText = msgJson[j].vote;
+                    var downBox = document.createElement('div');
+                    downBox.classList.add("down_block");
+                    var downB = document.createElement('button');
+                    downB.classList.add("down_btn")
+                    downB.innerText = "Down"
+                    var spanMsg = document.createElement('span');
+                    spanMsg.classList.add("id_msg");
+                    spanMsg.innerText = msgJson[j].msg_id;
+                    downBox.appendChild(spanMsg);
+                    downBox.appendChild(downB);
+                    
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
                     div_element.appendChild(postBox);
+                    div_element.appendChild(upBox);
+                    div_element.appendChild(voteBox);
+                    div_element.appendChild(downBox);
+                    //console.log(msgJson[j].username);
+                    //console.log(msgJson[j].date);
+                    //console.log(msgJson[j].text_msg);
                 }
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);

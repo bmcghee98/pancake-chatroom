@@ -388,3 +388,7 @@ input:-webkit-autofill{
   margin: 10px 0 6px 0;
   border-bottom: 1px solid #a37c5a;
 }
+
+.id_msg{
+  display: none;
+}

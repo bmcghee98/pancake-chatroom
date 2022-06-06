@@ -28,9 +28,9 @@
                 <h5>{{this.username}}</h5>
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
-                <input type="submit" onclick="upVote()" value="UP"/>
+                <input type="submit" action="/:roomId/messages/:msg_id" onclick="up()" value="UP"/>
                 <p1>{{this.vote}}</p1>
-                <input type="submit" onclick="downVote()" value="DOWN"/>
+                <input type="submit" onclick="down()" value="DOWN"/>
             </div>
         {{/each}}
     </div>
@@ -79,15 +79,15 @@
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
                     console.log(msgJson[j].text_msg);
-                    var upVote = document.createElement("button");
+                    let upVote = document.createElement("button");
                     upVote.innerHTML = "UP";
                     var vote = document.createElement('p1');
                     vote.innerText = msgJson[j].vote;
                     console.log(msgJson[j].vote);
-                    var downVote = document.createElement("button");
+                    let downVote = document.createElement("button");
                     downVote.innerHTML = "DOWN";
-                    upVote.onclick = upVote;
-                    downVote.onclick = downVote;
+                    upVote.onclick = up;
+                    downVote.onclick = down;
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
@@ -99,14 +99,17 @@
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
-        }, 2000);
+        }, 1000);
     })
 
-    function upVote() {
-        vote = vote + 1;
+    function up() {
+        vote++;
+        console.log("UP: "+this.vote);
     }
 
-    function downVote() {
-        vote = vote - 1;
+    function down() {
+        vote--;
+        console.log("DOWN: "+this.vote);
     }
+    
 </script>

@@ -15,6 +15,7 @@ const profileHandler = require('./controllers/profile.js');
 const roomHandler = require('./controllers/room.js');
 const roomIdGenerator = require('./util/roomIdGenerator');
 const userHandler = require('./controllers/user.js');
+const Messages = require('./models/Messages');
 
 const app = express();
 const port = 3000;
@@ -103,6 +104,25 @@ app.post("/newProfile", function(req,res){
     })
     newProfile.save().then(console.log("New Profile has been created")).catch(err=>console.log("Error when creating new profile", err));
     res.redirect('/login');
+});
+
+app.post("/:roomId/messages/:msg_id", function(req,res){
+    const vote = req.body.vote;
+
+    Message.find({room_id: req.params.roomId}).lean().then(item => {
+        //res.json(item)
+        
+    })
+
+    /*for (let i = 0; i < Message.length; i++) {
+        let msg = Message[i];
+
+        if(Message.msg_id === msg_id) {
+            res.send(vote + 1);
+            return;
+        }
+    }*/
+    res.send('Voted');
 });
 
 

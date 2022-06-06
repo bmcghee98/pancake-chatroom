@@ -93,9 +93,6 @@
         console.log("upVote clicked");
         const result = fetch("/vote", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
                     body: JSON.stringify({
                         userSelected, incVal
                     })

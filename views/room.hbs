@@ -28,9 +28,11 @@
                 <h5>{{this.username}}</h5>
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
-                <input type="submit" action="/:roomId/messages/:msg_id" onclick="up()" value="UP"/>
-                <p1>{{this.vote}}</p1>
-                <input type="submit" onclick="down()" value="DOWN"/>
+                {{!--<input type="submit" id="upvote" value="UP"/>
+                <p1>{{this.vote}}</p1>--}}
+                <button onClick="upVote(`{{this.msg_id}}`, {{this.vote}})">Up</button>
+                {{this.vote}}
+                <input type="submit" id="downvote" value="DOWN"/>
             </div>
         {{/each}}
     </div>
@@ -57,6 +59,25 @@
         let msgUrl = "http://localhost:3000//messages";
         let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
         console.log(fetchUrl);
+
+        //const form = document.getElementById("upvote"); //add an ID to the upvote button first
+
+           // form.addEventListener("submit", upVote);
+            /*async function upVote(event) {
+                const vote = 1;
+               
+                
+                const result = await fetch("/vote", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        vote
+                    })
+                }).then((res) => res.json())
+            }*/
+
         setInterval(async function(){
             fetch(fetchUrl)
             .then(response => response.json())
@@ -79,21 +100,20 @@
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
                     console.log(msgJson[j].text_msg);
-                    let upVote = document.createElement("button");
-                    upVote.innerHTML = "UP";
+                    var upV = document.createElement("button");
+                    upV.innerHTML = "UP"
                     var vote = document.createElement('p1');
                     vote.innerText = msgJson[j].vote;
                     console.log(msgJson[j].vote);
-                    let downVote = document.createElement("button");
-                    downVote.innerHTML = "DOWN";
-                    upVote.onclick = up;
-                    downVote.onclick = down;
+                    var downV = document.createElement("button");
+                    downV.innerHTML = "DOWN"
+                    upV.onclick = upVote;
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
-                    postBox.appendChild(upVote);
+                    postBox.appendChild(upV);
                     postBox.appendChild(vote);
-                    postBox.appendChild(downVote);
+                    postBox.appendChild(downV);
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
@@ -101,15 +121,16 @@
             });
         }, 1000);
     })
-
-    function up() {
-        vote++;
-        console.log("UP: "+this.vote);
+    function upVote(msgSelected, currVal){
+        const incVal = currVal+1;
+        console.log("msgSelected: ", msgSelected);
+        console.log("upVal: ", incVal);
+        console.log("upVote clicked");
+        const result = fetch("/vote", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        msgSelected, incVal
+                    })
+        })
     }
-
-    function down() {
-        vote--;
-        console.log("DOWN: "+this.vote);
-    }
-    
 </script>

@@ -87,7 +87,7 @@ app.post("/newMsg", function(req,res){
         msg_id: roomIdGenerator.roomIdGenerator(),
         room_id: req.body.room_id,
         date: moment().format("LLLL"),
-        vote: req.body.vote,
+        vote: 0,
     })
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
@@ -106,7 +106,7 @@ app.post("/newProfile", function(req,res){
     res.redirect('/login');
 });
 
-app.post("/:roomId/messages/:msg_id", function(req,res){
+app.post("/vote", function(req,res){
     const vote = req.body.vote;
 
     Message.find({room_id: req.params.roomId}).lean().then(item => {

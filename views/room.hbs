@@ -54,6 +54,8 @@
 
 <script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>
 <script>
+    let up1 = true;
+    let down1 = true;
     window.addEventListener('load', function(){
         let rm_id = '{{roomId}}';
         let msgUrl = "http://localhost:3000//messages";
@@ -90,7 +92,11 @@
                     console.log(msgJson[j].vote);
                     var downV = document.createElement("button");
                     downV.innerText = "DOWN";
-                    downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote) });
+                    //if (down1 == true) // if true 
+                    //{ 
+                        downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote); }); 
+                        //console.log("CLICKED"); 
+                    //}
                     var del = document.createElement("button");
                     del.addEventListener("click", () => { deleteMsg() });
                     del.innerText = "DEL"
@@ -113,10 +119,12 @@
         }, 5000);
     })
    async function upVote(msgSelected, currVal){
+       up1 = false;
         const inc = {"inc": currVal+1}
         console.log("msgSelected: ", msgSelected);
         console.log("upVal: ", inc);
         console.log("upVote clicked");
+        console.log("Up1: ", up1);
         const url = "http://localhost:3000/vote/" + msgSelected;
         const requestOptions = {
             method: 'POST',
@@ -127,13 +135,14 @@
         }
         const response  =  await fetch(url, requestOptions)
         const result = await response.json();
-    
     }
     async function downVote(msgSelected, currVal){
+        down1 = false;
         const dec = {"inc": currVal-1}
         console.log("msgSelected: ", msgSelected);
         console.log("downVal: ", dec);
         console.log("downVote clicked");
+        console.log("down1: ",down1);
         const url = "http://localhost:3000/vote/"+msgSelected;
         const requestOptions = {
             method: 'POST',
@@ -144,7 +153,6 @@
         }
         const response  =  await fetch(url, requestOptions)
         const result = await response.json();
-    
     }
 
     const  deleteMsg = async () => {

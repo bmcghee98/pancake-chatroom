@@ -8,8 +8,8 @@
     <ul>
         {{#each users}}
             <li>
-                <a href="">
-                   <div class="sidebar-container">
+                <a href='/user/{{this.user_id}}'>
+                    <div class="sidebar-container">
                         {{this.name}}
                     </div>
                     <div class="sidebar-username">
@@ -32,7 +32,7 @@
         {{/each}}
     </div>
 
-    <form class="add-post" action="/newMsg" method="POST">
+    <form class="add-post" action="/newMsg" method="POST" autocomplete="off">
     <div class="reply-item">
         <label for="name">Username</label>
         <input type="text" name="username" placeholder="Please enter a username"/>

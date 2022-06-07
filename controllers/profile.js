@@ -5,8 +5,9 @@ function getProfile(request, response, next){
       response.locals.users = items;
       next();
     });
-  }
+}
+
 
 module.exports = {
-    getProfile
+    getProfile,
 };

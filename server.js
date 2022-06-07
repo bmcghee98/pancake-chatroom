@@ -19,6 +19,7 @@ const profileHandler = require('./controllers/profile.js');
 const roomHandler = require('./controllers/room.js');
 const roomIdGenerator = require('./util/roomIdGenerator');
 const res = require('express/lib/response');
+const userHandler = require('./controllers/user.js');
 
 const app = express();
 const port = 3000;
@@ -76,8 +77,10 @@ app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderH
 app.get('/register', (req,res)=> res.render('profile'));
 app.get('/login', (req,res)=> res.render('login'));
 app.get('/change-password',(req,res)=> res.render('changePass'))
+app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser,userHandler.getUserMessages, userHandler.renderUser);
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
+//profileHandler.findUser, profileHandler.getProfile, profileHandler.renderUser);
 //Create endpoint- to create a new room in the database
 app.post("/create", function(req,res){
     const newRoom = new Room({
@@ -94,7 +97,6 @@ app.post("/newMsg", function(req,res){
         text_msg: req.body.msg,
         msg_id: roomIdGenerator.roomIdGenerator(),
         room_id: req.body.room_id,
-        moment_data: moment(),
         date: moment().format("LLLL"),
     })
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));

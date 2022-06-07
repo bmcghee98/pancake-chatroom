@@ -21,7 +21,9 @@
 </div>
 <section>
     <h1> {{title}}: {{roomName}}</h1>
-    <input id="search_bar" type="search" name="search" onkeyup="handleSearch()"placeholder="Search messages...">
+    <div class="search_block">
+        <input id="search_bar" type="search" name="search" onkeyup="handleSearch()"placeholder="Search messages...">
+    </div>
     <div id='display-msg'>
         {{#each messages}}
             <div class="post-box">
@@ -34,8 +36,8 @@
 
     <form class="add-post" action="/newMsg" method="POST" autocomplete="off">
     <div class="reply-item">
-        <label for="name">Username</label>
-        <input type="text" name="username" placeholder="Please enter a username"/>
+        <label style="display:none" for="name">Username</label>
+        <input style="display:none" type="text" name="username" placeholder="Please enter a username"/>
     </div>
     <div class="reply-item">
         <label for="name">Message</label>

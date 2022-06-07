@@ -9,11 +9,16 @@ const Room = require("./models/Rooms")
 const Message = require("./models/Messages")
 const Profile = require("./models/Profiles")
 const moment = require('moment');
+const bodyParser = require('body-parser')
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+const JWT_SECRET="7f7b0rbvrevnppjnvlkbwcrvv8r902ff19048fnvvnuvobsabb36432f78518vfiuvfdacuabvflbzbv874"
 // import handlers
 const homeHandler = require('./controllers/home.js');
 const profileHandler = require('./controllers/profile.js');
 const roomHandler = require('./controllers/room.js');
 const roomIdGenerator = require('./util/roomIdGenerator');
+const res = require('express/lib/response');
 const userHandler = require('./controllers/user.js');
 
 const app = express();
@@ -54,6 +59,12 @@ app.get("/:roomId/messages", function(req,res){
     })
 })
 
+app.get("/getCurrentUser", function(req,res){
+    Profile.findOne({isLoggedIn: true}).lean().then(item => {
+        res.json(item)
+    })
+})
+
 //return json of all users in the database
 app.get("/getUsers", function(req,res){
     Profile.find().lean().then(item => {
@@ -65,6 +76,7 @@ app.get("/getUsers", function(req,res){
 app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
 app.get('/login', (req,res)=> res.render('login'));
+app.get('/change-password',(req,res)=> res.render('changePass'))
 app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser,userHandler.getUserMessages, userHandler.renderUser);
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
@@ -91,8 +103,9 @@ app.post("/newMsg", function(req,res){
     res.redirect('back');
 });
 
+/*
 //endpoint to create new profile
-app.post("/newProfile", function(req,res){
+app.post("/api/newProfile", function(req,res){
     const newProfile = new Profile({
         username: req.body.username,
         name: req.body.name,
@@ -103,7 +116,103 @@ app.post("/newProfile", function(req,res){
     newProfile.save().then(console.log("New Profile has been created")).catch(err=>console.log("Error when creating new profile", err));
     res.redirect('/login');
 });
+*/
 
+app.post("/api/change-password", async(req, res) => {
+    const {token, newpassword:plainTextPassword} = req.body
+
+    
+    if (!plainTextPassword || typeof plainTextPassword !== 'string'){
+        return res.json({status:"error", error:"Invalid password"})
+    }
+
+    if (plainTextPassword.length < 5){
+        return res.json({status:"error", error:"Password should be at least 5 characters"})
+    }
+
+    try { //verify the JWT received
+        const user = jwt.verify(token, JWT_SECRET)
+        const _id = user.id
+        const password = await bcrypt.hash(plainTextPassword, 10)
+        await Profile.updateOne(
+            {_id},
+            {
+                $set:{password}
+            }
+        )
+        console.log("Password update successful")
+        return res.json({status:"ok"})
+    } catch(error) {
+        console.log(error)
+        return res.json({status:"error", error:""})
+    }
+})
+
+app.post("/api/login", async(req, res) => {
+    const {username, password} = req.body
+    
+    const user = await Profile.findOne({username}).lean()
+    if(!user) { // user not found
+        res.json({status:"error", error:"Invalid username/password"})
+    }
+
+    if (await bcrypt.compare(password, user.password)){
+        //username, password correct
+        const token = jwt.sign({
+            id:user._id,
+            username: user.username
+        },
+        JWT_SECRET)
+        
+        await Profile.findOneAndUpdate({isLoggedIn: true}, {isLoggedIn: false});
+        await Profile.updateOne({username}, {isLoggedIn: true});
+        console.log({status:"success", data:token});
+        res.redirect('/')
+        
+    } else {
+        console.log({status:"error", error:"Invalid username/password"})
+        res.redirect("/login")
+    }
+})
+
+app.post("/api/register", async (req, res) => {
+    console.log(req.body);
+    const username = req.body.username
+    const name = req.body.name;
+    const email = req.body.email;
+    const {password: plainTextPassword} = req.body
+    const user_id = roomIdGenerator.roomIdGenerator()
+    const isLoggedIn = false;
+    
+    /*
+    if (username || typeof username !== 'String'){
+        return res.json({status:"error", error:"Invalid username"})
+    }
+
+    if (!plainTextPassword || typeof plainTextPassword !== 'string'){
+        return res.json({status:"error", error:"Invalid password"})
+    }
+    */
+    if (plainTextPassword.length < 4){
+        return res.json({status:"error", error:"Password is too short"})
+    }
+
+    const password = await bcrypt.hash(plainTextPassword, 10)
+    //create the user
+    try{
+        await Profile.create({
+            username,
+            name,
+            password,
+            email,
+            user_id,
+            isLoggedIn,
+        })
+    } catch(error) {
+        console.log(error);
+        return res.json({status:"error"})
+    }
+})
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures
 

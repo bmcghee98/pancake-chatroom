@@ -1,28 +1,59 @@
-<div class="register-container">
-    <h1>Create New Profile</h1>
-    <form class="register-form" action="/newProfile" method="POST" autocomplete="off">
-    <div class="register-div">
-        <label class="register-label" for="name">Name</label>
-        <input class="register-input" type="text" id="name" name="name" required>
+<!doctype html>
+<html>
+	<div class="register-container">
+        <h1>Create New Profile</h1>
+        <form class="register-form" id="reg-form">
+        <div class="register-div">
+            <label class="register-label" for="name">Name</label>
+            <input class="register-input" type="text" id="name" name="name" required>
+        </div>
+        <div class="register-div">
+            <label class="register-label" for="username">Username</label>
+            <input class="register-input" type="text" id="username" name="username" required>
+        </div>
+        <div class="register-div">
+            <label class="register-label" for="email">Email</label>
+            <input class="register-input" type="email" id="email" name="email" required>
+        </div>
+        <div class="register-div">
+            <label class="register-label" for="password">Password</label>
+            <input class="register-input" type="password" id="password" name="password" required>
+        </div>
+        <div class="register-div">
+            <button class="btn register-btn" type="submit">Register</button>
+        </div>
+        </form>
+        <div class="register-link">
+            <a class="register-redirect" href="/login">Login</a>
+        </div>
     </div>
-    <div class="register-div">
-        <label class="register-label" for="username">Username</label>
-        <input class="register-input" type="text" id="username" name="username" required>
-    </div>
-    <div class="register-div">
-        <label class="register-label" for="email">Email</label>
-        <input class="register-input" type="email" id="email" name="email" required>
-    </div>
-    <div class="register-div">
-        <label class="register-label" for="password">Password</label>
-        <input class="register-input" type="password" id="password" name="password" required>
-    </div>
-    <div class="register-div">
-        <button class="btn register-btn" type="submit">Register</button>
-    </div>
-    </form>
-    <div class="register-link">
-        <a class="register-redirect" href="/login">Login</a>
-    </div>
-</div>
+		
+        <script>
+            const form = document.getElementById("reg-form");
+            form.addEventListener("submit", registerUser);
 
+            async function registerUser(event) {
+                const name = document.getElementById("name").value
+                const username = document.getElementById("username").value
+                const password = document.getElementById("password").value
+                const email = document.getElementById("email").value
+                
+                const result = await fetch("/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                       username, name, password, email
+                    })
+                }).then((res) => res.json())
+
+                if (result.status === "ok") {
+                    alert("success")
+                } else {
+                    alert(result.error);
+                }
+            }
+        </script>
+    </body>
+</html>

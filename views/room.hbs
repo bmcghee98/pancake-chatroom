@@ -21,7 +21,7 @@
 </div>
 <section>
     <h1> {{title}}: {{roomName}}</h1>
-
+    <input id="search_bar" type="search" name="search" onkeyup="handleSearch()"placeholder="Search messages...">
     <div id='display-msg'>
         {{#each messages}}
             <div class="post-box">
@@ -49,33 +49,48 @@
 
 <script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>
 <script>
+
+    let searchString = "" // here we use a global variable
+
+    const handleSearch = function() {
+        searchString = document.getElementById('search_bar').value.trim().toLowerCase()
+        console.log(searchString);
+    }
+
     window.addEventListener('load', function(){
-        let rm_id = {{roomId}};
+        let rm_id = "{{roomId}}";
         let msgUrl = "http://localhost:3000//messages";
         let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
         console.log(fetchUrl);
         setInterval(async function(){
+            const curr = document.getElementById('current-user');
+            const usernameBox = document.getElementsByName('username')[0];
+            if (curr.innerHTML !== "") {usernameBox.value = curr.innerHTML;}
             fetch(fetchUrl)
             .then(response => response.json())
             .then(data =>{
                 var msgJson = data;
-                console.log(msgJson);
-
                 var div_element = document.getElementById('display-msg');
                 div_element.innerHTML = ""
+
+                if (searchString.length > 0){
+                    msgJson = msgJson.filter((jsonObject) =>
+                    jsonObject.text_msg.toLowerCase().includes(searchString) 
+                    || jsonObject.username.toLowerCase().includes(searchString));
+                }
 
                 for(var j =0;j<msgJson.length;j++){
                     var postBox = document.createElement('div');
                     postBox.classList.add("post-box");
                     var user = document.createElement('h5');
                     user.innerText = msgJson[j].username;
-                    console.log(msgJson[j].username);
+                    //console.log(msgJson[j].username);
                     var date = document.createElement('h6');
                     date.innerText = msgJson[j].date;
-                    console.log(msgJson[j].date);
+                    //console.log(msgJson[j].date);
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
-                    console.log(msgJson[j].text_msg);
+                    //console.log(msgJson[j].text_msg);
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
@@ -84,6 +99,6 @@
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
-        }, 1000);
+        }, 600);
     })
 </script>

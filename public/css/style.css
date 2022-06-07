@@ -325,6 +325,26 @@ section{
   color:#6D4D64
 }
 
+#current-user-text {
+  position:fixed;
+  z-index: 1000;
+  top:2px;
+  font-size: 24px;
+  padding: 6px 12px;
+  left: 70%;
+  transform: translate(-50%, 5px);
+}
+
+#current-user {
+  position:fixed;
+  z-index: 1000;
+  top:2px;
+  font-size: 24px;
+  padding: 6px 12px;
+  left: 77%;
+  transform: translate(-50%, 5px);
+}
+
 .directory i{
   position:fixed;
   z-index: 1000;
@@ -333,6 +353,17 @@ section{
   padding: 6px 12px;
   left: 50%;
   transform: translate(-50%, 10px);
+}
+
+.login i {
+  position:fixed;
+  color: #654E3A;
+  z-index: 1000;
+  top:0px;
+  font-size: 24px;
+  padding: 6px 12px;
+  left: 95%;
+  transform: translate(-50%, 8px);
 }
 
 .return{
@@ -363,6 +394,18 @@ input:-webkit-autofill:active{
 input:-webkit-autofill{
   -webkit-text-fill-color: #654E3A !important;
 }
+
+#search_bar{
+  position: absolute;
+  right: 0;
+  margin-right: 100px;
+  margin-top: -30px;
+}
+
+input[type=search] {
+  width: 15%;
+  -webkit-transition: width 0.15s ease-in-out;
+  transition: width 0.15s ease-in-out;
 
 .user-profile{
   text-align: center;

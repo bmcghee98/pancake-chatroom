@@ -31,6 +31,8 @@
                 <button onClick="upVote(`{{this.msg_id}}`, {{this.vote}})">Up</button>
                 {{this.vote}}
                 <button onClick="downVote(`{{this.msg_id}}`, {{this.vote}})">Down</button>
+                <button onClick="deleteMsg()">Del</button>
+                <button onClick="editMsg()">Edit</button>
             </div>
         {{/each}}
     </div>
@@ -88,12 +90,21 @@
                     console.log(msgJson[j].vote);
                     var downV = document.createElement("button");
                     downV.innerText = "DOWN";
+                    downV.addEventListener("click", () => { downVote(msgJson[j].text_msg, msgJson[j].vote) });
+                    var del = document.createElement("button");
+                    del.addEventListener("click", () => { deleteMsg() });
+                    del.innerText = "DEL"
+                    var edit = document.createElement("button");
+                    edit.addEventListener("click", () => { editMsg() });
+                    edit.innerText = "EDIT";
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
                     postBox.appendChild(upV);
                     postBox.appendChild(vote);
                     postBox.appendChild(downV);
+                    postBox.appendChild(del);
+                    postBox.appendChild(edit);
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
@@ -102,32 +113,72 @@
         }, 5000);
     })
    async function upVote(msgSelected, currVal){
-        const inc = currVal+1;
+        const inc = {"inc": currVal+1}
         console.log("msgSelected: ", msgSelected);
         console.log("upVal: ", inc);
         console.log("upVote clicked");
-        const result =  await fetch("/vote", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        msgSelected, inc
-                    })
-                   
-        })
-        .then(response => response.json())
-        .catch(error => {
-            //handle error
-        });
+        const url = "http://localhost:3000/vote/LGUMDA"
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(inc)
+        }
+        const response  =  await fetch(url, requestOptions)
+        const result = await response.json();
+    
     }
-    function downVote(msgSelected, currVal){
-        const dec = currVal-1;
+    async function downVote(msgSelected, currVal){
+        const dec = {"inc": currVal-1}
         console.log("msgSelected: ", msgSelected);
         console.log("downVal: ", dec);
         console.log("downVote clicked");
-        const result = fetch("/vote", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        msgSelected, dec
-                    })
-        })
+        const url = "http://localhost:3000/vote/LGUMDA"
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dec)
+        }
+        const response  =  await fetch(url, requestOptions)
+        const result = await response.json();
+    
+    }
+
+    const  deleteMsg = async () => {
+        let resp = await fetch(`http://localhost:3000/P3GSPY/messages`, {method: "DELETE"});
+        console.log(resp.status); 
+        console.log(resp.statusText);
+        location.reload(true);
+
+    }
+
+    const editMsg = async () => {
+        let response = await fetch(`http://localhost:3000/LGUMDA/messages`, {method: "GET"});
+
+        console.log(response.status);
+        console.log(response.statusText);
+
+        if (response.status === 200) {
+            let data = await response.text();
+            console.log("DATA:",data);
+            const editMsg = JSON.parse(data);
+
+            const {
+                text_msg,
+                date,
+                vote
+            } = editMsg;
+
+            document.getElementById('text_msg').value = text_msg;
+            document.getElementById('date').value = moment().format("LLLL");
+            document.getElementById('vote').value = vote;
+
+            document.getElementById('editForm').action = `http://localhost:3000/LGUMDA/messages`;
+
+            //$('#editMsg').modal('show'); // modal should open here?
+        }
     }
 </script>

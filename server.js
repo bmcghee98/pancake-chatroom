@@ -108,44 +108,47 @@ app.post("/newProfile", function(req,res){
     res.redirect('/login');
 });
 
-app.post("/vote",  asyncHandler(async (req,res) => {
-    const vote = req.body.vote;
+app.post("/vote/:msgId",   (req,res) => {
+    const vote = req.body.inc;
     const newVote = req.body;
 
-    console.log("vote amount: " , newVote);
-
-    // Message.find({room_id: req.params.roomId}).lean().then(item => {
-    //     res.json(item)
-    //     //res.send(newVote);
-    //     //update message schema
-    //     // const newMessage = new Message({
-    //     //     username: req.body.username,
-    //     //     text_msg: req.body.msg,
-    //     //     msg_id: roomIdGenerator.roomIdGenerator(),
-    //     //     room_id: req.body.room_id,
-    //     //     date: moment().format("LLLL"),
-    //     //     vote: 0,
-    //     // })
-    // })
+    console.log("vote amount: " , vote);
 
     console.log("msg id", req.params.msgId)
 
-    let updateVote =  Message.findOneAndUpdate(
+    Message.findOneAndUpdate(
         { msg_id: req.params.msgId },
         {
-            username: req.body.username,
-            text_msg: req.body.msg,
-            msg_id: roomIdGenerator.roomIdGenerator(),
-            room_id: req.body.room_id,
-            date: moment().format("LLLL"),
-            vote: 0,
+            vote: vote,
         },
         
-    );
+    )
+    .exec()
 
-   
+});
 
-}));
+app.delete('/:msgId/messages', (req, res) => {
+    const msgId = req.params.msgId;
+
+    Message.find({msg_id: req.params.msgId})
+            .deleteOne()
+            .exec()
+ 
+    res.send('Message is deleted');
+});
+
+app.post('/:msgId/messages', (req, res) => {
+    const msgId = req.params.msgId;
+
+    Message.findOneAndUpdate({msg_id: req.params.msgId})
+        .updateOne()
+        .exec()
+
+    res.sendStatus(200);
+
+    res.send("Message is updated");
+})
+
 
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures

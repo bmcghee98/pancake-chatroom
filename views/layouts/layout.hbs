@@ -10,8 +10,30 @@
 </head>
 <body>
     <a href="/" class="directory"><i class="fab fa-stack-exchange fa-xl"></i></a>
+    {{!-- <a id="current-user-text">Current user: </a> --}}
+    <a id="current-user"></a>
+    <a href="/login" class="login" ><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
     <header class="header-bar"></header>
     {{{ body }}}
+
+    <script>
+        let fetchUrl = "http://localhost:3000/getCurrentUser";
+        console.log(fetchUrl);
+        var currentUser;
+
+        setInterval(async function(){
+            fetch(fetchUrl)
+            .then(response => response.json())
+            .then(data =>{
+                var curJson = data;
+                var currentUser = document.getElementById('current-user');
+                currentUser.innerHTML = curJson.username;
+               
+            }).catch(err =>{
+                console.log("Error when getting current user", err);
+            });
+        }, 500);
+    </script>
 </body>
 </html>
 

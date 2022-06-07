@@ -7,7 +7,7 @@ const ProfileSchema = new Schema({
         type: String,
         required: true,
     },
-    name:{
+    name:{ //"name" is deprecated??
         type: String,
         required: true,
     },
@@ -21,6 +21,10 @@ const ProfileSchema = new Schema({
     },
     user_id:{
         type: String,
+        required: true,
+    },
+    isLoggedIn: {
+        type: Boolean,
         required: true,
     }
 });

@@ -58,6 +58,12 @@ app.get("/:roomId/messages", function(req,res){
     })
 })
 
+app.get("/getCurrentUser", function(req,res){
+    Profile.findOne({isLoggedIn: true}).lean().then(item => {
+        res.json(item)
+    })
+})
+
 //return json of all users in the database
 app.get("/getUsers", function(req,res){
     Profile.find().lean().then(item => {
@@ -155,6 +161,9 @@ app.post("/api/login", async(req, res) => {
             username: user.username
         },
         JWT_SECRET)
+        
+        await Profile.findOneAndUpdate({isLoggedIn: true}, {isLoggedIn: false});
+        await Profile.updateOne({username}, {isLoggedIn: true});
         console.log({status:"success", data:token});
         res.redirect('/')
         
@@ -162,8 +171,6 @@ app.post("/api/login", async(req, res) => {
         console.log({status:"error", error:"Invalid username/password"})
         res.redirect("/login")
     }
-
-
 })
 
 app.post("/api/register", async (req, res) => {
@@ -173,6 +180,7 @@ app.post("/api/register", async (req, res) => {
     const email = req.body.email;
     const {password: plainTextPassword} = req.body
     const user_id = roomIdGenerator.roomIdGenerator()
+    const isLoggedIn = false;
     
     /*
     if (username || typeof username !== 'String'){
@@ -195,14 +203,14 @@ app.post("/api/register", async (req, res) => {
             name,
             password,
             email,
-            user_id
+            user_id,
+            isLoggedIn,
         })
     } catch(error) {
         console.log(error);
         return res.json({status:"error"})
     }
 })
-
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures
 

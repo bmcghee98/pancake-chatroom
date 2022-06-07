@@ -63,6 +63,9 @@
         let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
         console.log(fetchUrl);
         setInterval(async function(){
+            const curr = document.getElementById('current-user');
+            const usernameBox = document.getElementsByName('username')[0];
+            if (curr.innerHTML !== "") {usernameBox.value = curr.innerHTML;}
             fetch(fetchUrl)
             .then(response => response.json())
             .then(data =>{
@@ -72,7 +75,6 @@
 
                 if (searchString.length > 0){
                     msgJson = msgJson.filter((jsonObject) =>
-
                     jsonObject.text_msg.toLowerCase().includes(searchString) 
                     || jsonObject.username.toLowerCase().includes(searchString));
                 }
@@ -97,6 +99,6 @@
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
-        }, 1000);
+        }, 600);
     })
 </script>

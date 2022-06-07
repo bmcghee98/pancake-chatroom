@@ -22,6 +22,10 @@ const ProfileSchema = new Schema({
     user_id:{
         type: String,
         required: true,
+    },
+    isLoggedIn: {
+        type: Boolean,
+        required: true,
     }
 });
 

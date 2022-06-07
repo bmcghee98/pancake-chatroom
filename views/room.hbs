@@ -52,8 +52,8 @@
 </section>
 
 <script>
-    let up1 = true;
-    let down1 = true;
+    let voted1 = true;
+    let msgs = [];
     window.addEventListener('load', function(){
         let rm_id = '{{roomId}}';
         let msgUrl = "http://localhost:3000//messages";
@@ -90,11 +90,7 @@
                     console.log(msgJson[j].vote);
                     var downV = document.createElement("button");
                     downV.innerText = "DOWN";
-                    //if (down1 == true) // if true 
-                    //{ 
-                        downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote); }); 
-                        //console.log("CLICKED"); 
-                    //}
+                    downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote); }); 
                     var del = document.createElement("button");
                     del.addEventListener("click", () => { deleteMsg() });
                     del.innerText = "DEL"
@@ -117,12 +113,18 @@
         }, 5000);
     })
    async function upVote(msgSelected, currVal){
-       up1 = false;
+       // checks if pressed
+        for (let i = 0; i < msgs.length; i++) {
+            if (msgSelected == msgs[i]) {
+                voted1 = false;
+                return;
+            }
+        }
+        msgs.push(msgSelected);
         const inc = {"inc": currVal+1}
         console.log("msgSelected: ", msgSelected);
         console.log("upVal: ", inc);
         console.log("upVote clicked");
-        console.log("Up1: ", up1);
         const url = "http://localhost:3000/vote/" + msgSelected;
         const requestOptions = {
             method: 'POST',
@@ -135,12 +137,17 @@
         const result = await response.json();
     }
     async function downVote(msgSelected, currVal){
-        down1 = false;
+        for (let i = 0; i < msgs.length; i++) {
+            if (msgSelected == msgs[i]) {
+                voted1 = false;
+                return;
+            }
+        }
+        msgs.push(msgSelected);
         const dec = {"inc": currVal-1}
         console.log("msgSelected: ", msgSelected);
         console.log("downVal: ", dec);
         console.log("downVote clicked");
-        console.log("down1: ",down1);
         const url = "http://localhost:3000/vote/"+msgSelected;
         const requestOptions = {
             method: 'POST',

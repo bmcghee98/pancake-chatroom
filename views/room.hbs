@@ -57,9 +57,6 @@
 <script>
     let voted1 = true;
     let msgs = [];
-    window.addEventListener('load', function(){
-        let rm_id = '{{roomId}}';
-
     let searchString = "" // here we use a global variable
 
     const handleSearch = function() {
@@ -84,14 +81,13 @@
                 var div_element = document.getElementById('display-msg');
                 div_element.innerHTML = ""
 
-                for(let j =0;j<msgJson.length;j++){
                 if (searchString.length > 0){
                     msgJson = msgJson.filter((jsonObject) =>
                     jsonObject.text_msg.toLowerCase().includes(searchString) 
                     || jsonObject.username.toLowerCase().includes(searchString));
                 }
 
-                for(var j =0;j<msgJson.length;j++){
+                for(let j =0;j<msgJson.length;j++){
                     var postBox = document.createElement('div');
                     postBox.classList.add("post-box");
                     var user = document.createElement('h5');

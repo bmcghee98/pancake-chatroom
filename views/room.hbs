@@ -85,12 +85,12 @@
                     var vote = document.createElement('p1');
                     vote.innerText = msgJson[j].vote;
                     var upV = document.createElement("button");
-                    upV.addEventListener("click", () => { upVote(msgJson[j].text_msg, msgJson[j].vote) });
+                    upV.addEventListener("click", () => { upVote(msgJson[j].msg_id, msgJson[j].vote) });
                     upV.innerText = "UP"
                     console.log(msgJson[j].vote);
                     var downV = document.createElement("button");
                     downV.innerText = "DOWN";
-                    downV.addEventListener("click", () => { downVote(msgJson[j].text_msg, msgJson[j].vote) });
+                    downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote) });
                     var del = document.createElement("button");
                     del.addEventListener("click", () => { deleteMsg() });
                     del.innerText = "DEL"
@@ -117,7 +117,7 @@
         console.log("msgSelected: ", msgSelected);
         console.log("upVal: ", inc);
         console.log("upVote clicked");
-        const url = "http://localhost:3000/vote/LGUMDA"
+        const url = "http://localhost:3000/vote/" + msgSelected;
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -134,7 +134,7 @@
         console.log("msgSelected: ", msgSelected);
         console.log("downVal: ", dec);
         console.log("downVote clicked");
-        const url = "http://localhost:3000/vote/LGUMDA"
+        const url = "http://localhost:3000/vote/"+msgSelected;
         const requestOptions = {
             method: 'POST',
             headers: {

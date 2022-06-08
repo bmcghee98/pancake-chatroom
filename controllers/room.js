@@ -13,7 +13,7 @@ function getRoom(request, response, next){
                 response.locals.title = "Chatroom";
                 response.locals.roomId = request.params.roomId;
                 response.locals.messages = items;
-                console.log("messages found", items)
+                // console.log("messages found", items)
                 response.locals.roomName = roomname;
                 next();
             });

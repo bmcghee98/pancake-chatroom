@@ -14,7 +14,7 @@ function getUserMessages(req, res, next) {
         console.log("user found for messages:",item.username)
         Messages.find({username: item.username}).sort({date :-1}).lean().then(items =>{
             res.locals.messages = items;
-            console.log("messages found", items)
+            // console.log("messages found", items)
             next();
         });
     });

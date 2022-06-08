@@ -28,7 +28,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
-
 // If you choose not to use handlebars as template engine, you can safely delete the following part and use your own way to render content
 // view engine setup
 app.engine('hbs', hbs({extname: 'hbs', 
@@ -95,6 +94,7 @@ app.post("/create", function(req,res){
         name: req.body.roomName,
         id: roomIdGenerator.roomIdGenerator(),
     })
+    console.log("create")
     newRoom.save().then(console.log("Room has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('/');
 });
@@ -198,13 +198,16 @@ app.post("/api/register", async (req, res) => {
     }
 })
 
-app.post("/api/editMessage", async (req, res) => {
+let redirectRoom;
+app.post("/api/editMessage", function(req, res){
     const newText = req.body.new_text;
     const message = req.body.msg_id;
+    Message.findOneAndUpdate({msg_id: message}, {text_msg: newText});
+    if(req.body.room_id){
+        redirectRoom = "/" + req.body.room_id;
+    }
+    res.redirect(redirectRoom)
     
-    console.log("updating");
-    await Message.findOneAndUpdate({msg_id: message}, {text_msg: newText});
-    res.redirect("http://localhost:3000/" + req.params.room_id);
 })
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures

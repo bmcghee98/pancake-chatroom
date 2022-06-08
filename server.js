@@ -2,6 +2,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const hbs = require('express-handlebars');
+const asyncHandler = require('express-async-handler')
 const path = require('path');
 const mongoose = require('mongoose');
 const config = require('config');
@@ -20,6 +21,8 @@ const roomHandler = require('./controllers/room.js');
 const roomIdGenerator = require('./util/roomIdGenerator');
 const res = require('express/lib/response');
 const userHandler = require('./controllers/user.js');
+const Messages = require('./models/Messages');
+const { update } = require('./models/Messages');
 
 const app = express();
 const port = 3000;
@@ -106,10 +109,52 @@ app.post("/newMsg", function(req,res){
         msg_id: roomIdGenerator.roomIdGenerator(),
         room_id: req.body.room_id,
         date: moment().format("LLLL"),
+        vote: 0,
     })
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
 });
+
+app.post("/vote/:msgId",   (req,res) => {
+    const vote = req.body.inc;
+    const newVote = req.body;
+
+    console.log("vote amount: " , vote);
+
+    console.log("msg id", req.params.msgId)
+
+    Message.findOneAndUpdate(
+        { msg_id: req.params.msgId },
+        {
+            vote: vote,
+        },
+        
+    )
+    .exec()
+
+});
+
+app.delete('/messages/:msgId', (req, res) => {
+    const msgId = req.params.msgId;
+
+    Message.find({msg_id: req.params.msgId})
+            .deleteOne()
+            .exec()
+ 
+    res.send('Message is deleted');
+});
+
+app.post('/:msgId/messages', (req, res) => {
+    const msgId = req.params.msgId;
+
+    Message.findOneAndUpdate({msg_id: req.params.msgId})
+        .updateOne()
+        .exec()
+
+    res.sendStatus(200);
+
+    res.send("Message is updated");
+})
 
 app.post("/api/change-password", async(req, res) => {
     const {token, newpassword:plainTextPassword} = req.body

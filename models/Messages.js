@@ -22,6 +22,10 @@ const MessageSchema = new Schema({
     date:{
         type: String,
         required: true,
+    },
+    vote:{
+        type: Number,
+        required: true,
     }
 });
 

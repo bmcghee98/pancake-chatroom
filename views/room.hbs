@@ -32,6 +32,11 @@
                 <h5>{{this.username}}</h5>
                 <h6> {{this.date}}</h6>
                 <p>{{this.text_msg}}</p>
+                <button onClick="upVote(`{{this.msg_id}}`, {{this.vote}})">Up</button>
+                {{this.vote}}
+                <button onClick="downVote(`{{this.msg_id}}`, {{this.vote}})">Down</button>
+                <button onClick="deleteMsg()">Del</button>
+                <button onClick="editMsg()">Edit</button>
             </div>
         {{/each}}
     </div>
@@ -50,9 +55,12 @@
     </form>
 </section>
 
-
-<script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>
 <script>
+// jlu081
+    let voted1 = true;
+    let msgs = [];
+//=======
+// main
     let searchString = "" // here we use a global variable
     const handleSearch = function() {
         searchString = document.getElementById('search_bar').value.trim().toLowerCase()
@@ -62,8 +70,10 @@
     window.addEventListener('load', function(){
         let rm_id = "{{roomId}}";
         let msgUrl = "http://localhost:3000//messages";
+        let username = 'username';
         let fetchUrl = msgUrl.substring(0, 22)  + rm_id + msgUrl.substring(22, msgUrl.length);
         console.log(fetchUrl);
+
         setInterval(async function(){
             const curr = document.getElementById('current-user');
             const usernameBox = document.getElementsByName('username')[0];
@@ -79,7 +89,12 @@
                     jsonObject.text_msg.toLowerCase().includes(searchString) 
                     || jsonObject.username.toLowerCase().includes(searchString));
                 }
-                for(var j =0;j<msgJson.length;j++){
+//jlu081
+
+                for(let j =0;j<msgJson.length;j++){
+//=======
+//                for(var j =0;j<msgJson.length;j++){
+// main
                     var postBox = document.createElement('div');
                     postBox.classList.add("post-box");
                     var user = document.createElement('h5');
@@ -90,7 +105,22 @@
                     //console.log(msgJson[j].date);
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
+// jlu081
+                    console.log(msgJson[j].text_msg);
+                    var vote = document.createElement('p1');
+                    vote.innerText = msgJson[j].vote;
+                    var upV = document.createElement("button");
+                    upV.addEventListener("click", () => { upVote(msgJson[j].msg_id, msgJson[j].vote) });
+                    upV.innerText = "UP"
+                    console.log(msgJson[j].vote);
+                    var downV = document.createElement("button");
+                    downV.innerText = "DOWN";
+                    downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote); }); 
+                    var del = document.createElement("button");
+                    var edit = document.createElement("button");
+//=======
                     //console.log(msgJson[j].text_msg);
+// main
                     
                     var editBtn = document.createElement('button');
                     const link = "/" + rm_id + "/" + msgJson[j].msg_id
@@ -102,8 +132,24 @@
                         var editBtn = document.createElement('button');
                         const link = "/" + rm_id + "/" + msgJson[j].msg_id
                         editBtn.innerHTML = "<a href="+ link + ">Edit</a>"
-                        postBox.appendChild(editBtn);
+// jlu081
+                        var del = document.createElement("button");
+                        del.addEventListener("click", () => { deleteMsg(msgJson[j].msg_id) });
+                        del.innerText = "DEL"
+                        
                     }
+
+                    edit.addEventListener("click", () => { editMsg() });
+                    edit.innerText = "EDIT";
+                    postBox.appendChild(upV);
+                    postBox.appendChild(vote);
+                    postBox.appendChild(downV);
+                    postBox.appendChild(editBtn);
+                    postBox.appendChild(del);
+//=======
+//                        postBox.appendChild(editBtn);
+//                    }
+// main
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
@@ -111,4 +157,88 @@
             });
         }, 1000);
     })
+   async function upVote(msgSelected, currVal){
+       // checks if pressed
+        for (let i = 0; i < msgs.length; i++) {
+            if (msgSelected == msgs[i]) {
+                voted1 = false;
+                return;
+            }
+        }
+        msgs.push(msgSelected);
+        const inc = {"inc": currVal+1}
+        console.log("msgSelected: ", msgSelected);
+        console.log("upVal: ", inc);
+        console.log("upVote clicked");
+        const url = "http://localhost:3000/vote/" + msgSelected;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(inc)
+        }
+        const response  =  await fetch(url, requestOptions)
+        const result = await response.json();
+    }
+    async function downVote(msgSelected, currVal){
+        for (let i = 0; i < msgs.length; i++) {
+            if (msgSelected == msgs[i]) {
+                voted1 = false;
+                return;
+            }
+        }
+        msgs.push(msgSelected);
+        const dec = {"inc": currVal-1}
+        console.log("msgSelected: ", msgSelected);
+        console.log("downVal: ", dec);
+        console.log("downVote clicked");
+        const url = "http://localhost:3000/vote/"+msgSelected;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dec)
+        }
+        const response  =  await fetch(url, requestOptions)
+        const result = await response.json();
+    }
+
+    async function deleteMsg(msgSelected) {
+        const url = "http://localhost:3000/messages/"+msgSelected;
+
+        let resp = await fetch(url, {method: "DELETE"});
+            console.log(resp.status); 
+            console.log(resp.statusText);
+            location.reload(true);
+
+    }
+
+    const editMsg = async () => {
+        let response = await fetch(`http://localhost:3000/LGUMDA/messages`, {method: "GET"});
+
+        console.log(response.status);
+        console.log(response.statusText);
+
+        if (response.status === 200) {
+            let data = await response.text();
+            console.log("DATA:",data);
+            const editMsg = JSON.parse(data);
+
+            const {
+                text_msg,
+                date,
+                vote
+            } = editMsg;
+
+            document.getElementById('text_msg').value = text_msg;
+            document.getElementById('date').value = moment().format("LLLL");
+            document.getElementById('vote').value = vote;
+
+            document.getElementById('editForm').action = `http://localhost:3000/LGUMDA/messages`;
+
+            //$('#editMsg').modal('show'); // modal should open here?
+        }
+    }
 </script>

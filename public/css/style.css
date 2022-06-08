@@ -460,3 +460,16 @@ input[type=search] {
 .p1{
   margin: 10px;
 }
+
+button{
+  color:#956339;
+  margin: 5px 5px 5px 0px;
+  padding: 5px 5px 5px 0px;;
+  border: 0;
+  background-color: #F2CF9E;
+  text-decoration: none;
+}
+
+button a{
+  color:#956339;
+}

@@ -114,48 +114,50 @@ app.post("/newMsg", function(req,res){
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
 });
+//Start of Changes
 
-app.post("/vote/:msgId",   (req,res) => {
-    const vote = req.body.inc;
-    const newVote = req.body;
+// app.post("/vote/:msgId",   (req,res) => {
+//     const vote = req.body.inc;
+//     const newVote = req.body;
 
-    console.log("vote amount: " , vote);
+//     console.log("vote amount: " , vote);
 
-    console.log("msg id", req.params.msgId)
+//     console.log("msg id", req.params.msgId)
 
-    Message.findOneAndUpdate(
-        { msg_id: req.params.msgId },
-        {
-            vote: vote,
-        },
+//     Message.findOneAndUpdate(
+//         { msg_id: req.params.msgId },
+//         {
+//             vote: vote,
+//         },
         
-    )
-    .exec()
+//     )
+//     .exec()
 
-});
+// });
 
-app.delete('/messages/:msgId', (req, res) => {
-    const msgId = req.params.msgId;
+// app.delete('/messages/:msgId', (req, res) => {
+//     const msgId = req.params.msgId;
 
-    Message.find({msg_id: req.params.msgId})
-            .deleteOne()
-            .exec()
+//     Message.find({msg_id: req.params.msgId})
+//             .deleteOne()
+//             .exec()
  
-    res.send('Message is deleted');
-});
+//     res.send('Message is deleted');
+// });
 
-app.post('/:msgId/messages', (req, res) => {
-    const msgId = req.params.msgId;
+// app.post('/:msgId/messages', (req, res) => {
+//     const msgId = req.params.msgId;
 
-    Message.findOneAndUpdate({msg_id: req.params.msgId})
-        .updateOne()
-        .exec()
+//     Message.findOneAndUpdate({msg_id: req.params.msgId})
+//         .updateOne()
+//         .exec()
 
-    res.sendStatus(200);
+//     res.sendStatus(200);
 
-    res.send("Message is updated");
-})
+//     res.send("Message is updated");
+// })
 
+//Prev
 app.post("/api/change-password", async(req, res) => {
     const {token, newpassword:plainTextPassword} = req.body
 

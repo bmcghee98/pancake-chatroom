@@ -34,14 +34,14 @@
                 <p>{{this.text_msg}}</p>
                 <button onClick="upVote(`{{this.msg_id}}`, {{this.vote}})">Up</button>
                 {{this.vote}}
-                <button onClick="downVote(`{{this.msg_id}}`, {{this.vote}})">Down</button>
-                <button onClick="deleteMsg()">Del</button>
+                <button onClick="downVote(`{{this.msg_id}}`, {{this.vote}})"> Down</button>
                 <button onClick="editMsg()">Edit</button>
+                <button onClick="deleteMsg()">Delete</button>
             </div>
         {{/each}}
     </div>
 
-    <form class="add-post" action="/newMsg" method="POST">
+    <form class="add-post" action="/newMsg" method="POST" autocomplete="off">
     <div class="reply-item">
         <label style="display:none" for="name">Username</label>
         <input style="display:none" type="text" name="username" placeholder="Please enter a username"/>
@@ -56,11 +56,9 @@
 </section>
 
 <script>
-// jlu081
     let voted1 = true;
     let msgs = [];
-//=======
-// main
+
     let searchString = "" // here we use a global variable
     const handleSearch = function() {
         searchString = document.getElementById('search_bar').value.trim().toLowerCase()
@@ -89,12 +87,8 @@
                     jsonObject.text_msg.toLowerCase().includes(searchString) 
                     || jsonObject.username.toLowerCase().includes(searchString));
                 }
-//jlu081
 
-                for(let j =0;j<msgJson.length;j++){
-//=======
-//                for(var j =0;j<msgJson.length;j++){
-// main
+                for(var j =0;j<msgJson.length;j++){
                     var postBox = document.createElement('div');
                     postBox.classList.add("post-box");
                     var user = document.createElement('h5');
@@ -105,51 +99,37 @@
                     //console.log(msgJson[j].date);
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
-// jlu081
                     console.log(msgJson[j].text_msg);
                     var vote = document.createElement('p1');
                     vote.innerText = msgJson[j].vote;
                     var upV = document.createElement("button");
                     upV.addEventListener("click", () => { upVote(msgJson[j].msg_id, msgJson[j].vote) });
-                    upV.innerText = "UP"
+                    upV.innerText = "Up"
                     console.log(msgJson[j].vote);
                     var downV = document.createElement("button");
-                    downV.innerText = "DOWN";
+                    downV.innerText = " Down";
                     downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote); }); 
                     var del = document.createElement("button");
                     var edit = document.createElement("button");
-//=======
-                    //console.log(msgJson[j].text_msg);
-// main
-                    
                     var editBtn = document.createElement('button');
                     const link = "/" + rm_id + "/" + msgJson[j].msg_id
                     editBtn.innerHTML = "<a href="+ link + ">Edit</a>"
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
+                    postBox.appendChild(upV);
+                    postBox.appendChild(vote);
+                    postBox.appendChild(downV);
                     if (curr.innerHTML == msgJson[j].username){
                         var editBtn = document.createElement('button');
                         const link = "/" + rm_id + "/" + msgJson[j].msg_id
                         editBtn.innerHTML = "<a href="+ link + ">Edit</a>"
-// jlu081
                         var del = document.createElement("button");
                         del.addEventListener("click", () => { deleteMsg(msgJson[j].msg_id) });
-                        del.innerText = "DEL"
-                        
+                        del.innerText = "Delete"
+                        postBox.appendChild(editBtn);
+                        postBox.appendChild(del);
                     }
-
-                    edit.addEventListener("click", () => { editMsg() });
-                    edit.innerText = "EDIT";
-                    postBox.appendChild(upV);
-                    postBox.appendChild(vote);
-                    postBox.appendChild(downV);
-                    postBox.appendChild(editBtn);
-                    postBox.appendChild(del);
-//=======
-//                        postBox.appendChild(editBtn);
-//                    }
-// main
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
@@ -181,6 +161,7 @@
         const response  =  await fetch(url, requestOptions)
         const result = await response.json();
     }
+    
     async function downVote(msgSelected, currVal){
         for (let i = 0; i < msgs.length; i++) {
             if (msgSelected == msgs[i]) {

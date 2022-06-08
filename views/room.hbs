@@ -52,9 +52,7 @@
 
 <script src="https://twitter.github.io/typeahead.js/js/handlebar.js"></script>
 <script>
-
     let searchString = "" // here we use a global variable
-
     const handleSearch = function() {
         searchString = document.getElementById('search_bar').value.trim().toLowerCase()
         console.log(searchString);
@@ -75,13 +73,11 @@
                 var msgJson = data;
                 var div_element = document.getElementById('display-msg');
                 div_element.innerHTML = ""
-
                 if (searchString.length > 0){
                     msgJson = msgJson.filter((jsonObject) =>
                     jsonObject.text_msg.toLowerCase().includes(searchString) 
                     || jsonObject.username.toLowerCase().includes(searchString));
                 }
-
                 for(var j =0;j<msgJson.length;j++){
                     var postBox = document.createElement('div');
                     postBox.classList.add("post-box");
@@ -94,14 +90,24 @@
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
                     //console.log(msgJson[j].text_msg);
+                    
+                    var editBtn = document.createElement('button');
+                    const link = "/" + rm_id + "/" + msgJson[j].msg_id
+                    editBtn.innerHTML = "<a href="+ link + ">Edit</a>"
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
+                    if (curr.innerHTML == msgJson[j].username){
+                        var editBtn = document.createElement('button');
+                        const link = "/" + rm_id + "/" + msgJson[j].msg_id
+                        editBtn.innerHTML = "<a href="+ link + ">Edit</a>"
+                        postBox.appendChild(editBtn);
+                    }
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
-        }, 600);
+        }, 1000);
     })
 </script>

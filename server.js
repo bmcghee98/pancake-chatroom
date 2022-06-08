@@ -59,6 +59,13 @@ app.get("/:roomId/messages", function(req,res){
     })
 })
 
+//messages - return json of message with msg_id
+app.get("/getMessage/:msg_id", function(req,res){
+    Message.find({msg_id: req.params.msg_id}).lean().then(item => {
+        res.json(item)
+    })
+})
+
 app.get("/getCurrentUser", function(req,res){
     Profile.findOne({isLoggedIn: true}).lean().then(item => {
         res.json(item)
@@ -76,7 +83,8 @@ app.get("/getUsers", function(req,res){
 app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
 app.get('/login', (req,res)=> res.render('login'));
-app.get('/change-password',(req,res)=> res.render('changePass'))
+app.get('/change-password',(req,res)=> res.render('changePass'));
+app.get('/:roomId/:msg_id', (req,res)=> res.render('editMessage'));
 app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser,userHandler.getUserMessages, userHandler.renderUser);
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
 
@@ -212,6 +220,15 @@ app.post("/api/register", async (req, res) => {
         console.log(error);
         return res.json({status:"error"})
     }
+})
+
+app.post("/api/editMessage", async (req, res) => {
+    const newText = req.body.new_text;
+    const message = req.body.msg_id;
+    
+    console.log("updating");
+    await Message.findOneAndUpdate({msg_id: message}, {text_msg: newText});
+    res.redirect("http://localhost:3000/" + req.params.room_id);
 })
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures

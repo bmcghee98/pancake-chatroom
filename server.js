@@ -27,7 +27,7 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // If you choose not to use handlebars as template engine, you can safely delete the following part and use your own way to render content
 // view engine setup
@@ -84,9 +84,9 @@ app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderH
 app.get('/register', (req,res)=> res.render('profile'));
 app.get('/login', (req,res)=> res.render('login'));
 app.get('/change-password',(req,res)=> res.render('changePass'));
-app.get('/:roomId/:msg_id', (req,res)=> res.render('editMessage'));
 app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser,userHandler.getUserMessages, userHandler.renderUser);
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
+app.get('/:roomId/:msg_id', (req,res)=> res.render('editMessage'));
 
 //profileHandler.findUser, profileHandler.getProfile, profileHandler.renderUser);
 //Create endpoint- to create a new room in the database

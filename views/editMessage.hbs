@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/style.css">
+	</head>
+	<body>
+        <a id="current-user"></a>
+		<div class="register-container">
+            <h1>Edit Message</h1>
+            <form class="register-form" id="reg-form" autocomplete="off" action="/api/editMessage" method="POST">
+                <div class="register-div">
+                    <label class="register-label" for="name">Message</label>
+                    <input class="register-input" type="text" id="message-text" name="message-text" required>
+                    <input class="register-input" type="hidden" id="message-id" required>
+                </div>
+                <div class="register-div">
+                    <button class="btn register-btn" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+		
+        <script>
+           let urlParts = window.location.href.split("/");
+           let msg_id = urlParts[4];
+           let room_id = urlParts[3];
+           console.log(msg_id);
+           console.log(room_id);
+           let url = "http://localhost:3000/getMessage/" + msg_id;
+           console.log(url);
+
+           fetch(url)
+           .then(response => response.json())
+           .then(data => {
+               var msgJson = data;
+               console.log(msgJson);
+               document.getElementById('message-text').value = msgJson[0].text_msg;
+           })
+
+            const form = document.getElementById("reg-form");
+            form.addEventListener("submit", editMessage);
+
+            async function editMessage(event) {
+                //username not required
+                const new_text = document.getElementById("message-text").value;
+    
+                const result = await fetch("/api/editMessage", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        new_text, msg_id, room_id
+                    })
+                }).then((res) => {
+                    res.json();
+                })
+
+            }
+        </script>
+    </body>
+</html>

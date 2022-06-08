@@ -30,8 +30,7 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, '/public')));
 // If you choose not to use handlebars as template engine, you can safely delete the following part and use your own way to render content
 // view engine setup
 app.engine('hbs', hbs({extname: 'hbs', 
@@ -62,6 +61,13 @@ app.get("/:roomId/messages", function(req,res){
     })
 })
 
+//messages - return json of message with msg_id
+app.get("/getMessage/:msg_id", function(req,res){
+    Message.find({msg_id: req.params.msg_id}).lean().then(item => {
+        res.json(item)
+    })
+})
+
 app.get("/getCurrentUser", function(req,res){
     Profile.findOne({isLoggedIn: true}).lean().then(item => {
         res.json(item)
@@ -79,9 +85,10 @@ app.get("/getUsers", function(req,res){
 app.get('/', homeHandler.getHome, profileHandler.getProfile, homeHandler.renderHome);
 app.get('/register', (req,res)=> res.render('profile'));
 app.get('/login', (req,res)=> res.render('login'));
-app.get('/change-password',(req,res)=> res.render('changePass'))
+app.get('/change-password',(req,res)=> res.render('changePass'));
 app.get('/user/:userId', profileHandler.getProfile, userHandler.getUser,userHandler.getUserMessages, userHandler.renderUser);
 app.get('/:roomId', roomHandler.getRoom, profileHandler.getProfile, roomHandler.renderRoom);
+app.get('/:roomId/:msg_id', (req,res)=> res.render('editMessage'));
 
 //profileHandler.findUser, profileHandler.getProfile, profileHandler.renderUser);
 //Create endpoint- to create a new room in the database
@@ -90,6 +97,7 @@ app.post("/create", function(req,res){
         name: req.body.roomName,
         id: roomIdGenerator.roomIdGenerator(),
     })
+    console.log("create")
     newRoom.save().then(console.log("Room has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('/');
 });
@@ -106,21 +114,6 @@ app.post("/newMsg", function(req,res){
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
 });
-
-/*
-//endpoint to create new profile
-app.post("/api/newProfile", function(req,res){
-    const newProfile = new Profile({
-        username: req.body.username,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        user_id: roomIdGenerator.roomIdGenerator(),
-    })
-    newProfile.save().then(console.log("New Profile has been created")).catch(err=>console.log("Error when creating new profile", err));
-    res.redirect('/login');
-});
-*/
 
 app.post("/vote/:msgId",   (req,res) => {
     const vote = req.body.inc;
@@ -162,7 +155,6 @@ app.post('/:msgId/messages', (req, res) => {
 
     res.send("Message is updated");
 })
-
 
 app.post("/api/change-password", async(req, res) => {
     const {token, newpassword:plainTextPassword} = req.body
@@ -230,15 +222,6 @@ app.post("/api/register", async (req, res) => {
     const user_id = roomIdGenerator.roomIdGenerator()
     const isLoggedIn = false;
     
-    /*
-    if (username || typeof username !== 'String'){
-        return res.json({status:"error", error:"Invalid username"})
-    }
-
-    if (!plainTextPassword || typeof plainTextPassword !== 'string'){
-        return res.json({status:"error", error:"Invalid password"})
-    }
-    */
     if (plainTextPassword.length < 4){
         return res.json({status:"error", error:"Password is too short"})
     }
@@ -258,6 +241,18 @@ app.post("/api/register", async (req, res) => {
         console.log(error);
         return res.json({status:"error"})
     }
+})
+
+let redirectRoom;
+app.post("/api/editMessage", function(req, res){
+    const newText = req.body.new_text;
+    const message = req.body.msg_id;
+    Message.findOneAndUpdate({msg_id: message}, {text_msg: newText});
+    if(req.body.room_id){
+        redirectRoom = "/" + req.body.room_id;
+    }
+    res.redirect(redirectRoom)
+    
 })
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures

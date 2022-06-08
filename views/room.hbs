@@ -20,6 +20,7 @@
     </ul>
 </div>
 <section>
+    <a id="current-user"></a>
     <h1> {{title}}: {{roomName}}</h1>
     <div class="search_block">
         <i class="fa-solid fa-magnifying-glass"><input id="search_bar" type="search" name="search" onkeyup="handleSearch()"placeholder="Search messages..."></i>
@@ -40,7 +41,7 @@
         {{/each}}
     </div>
 
-    <form class="add-post" action="/newMsg" method="POST" autocomplete="off">
+    <form class="add-post" action="/newMsg" method="POST">
     <div class="reply-item">
         <label style="display:none" for="name">Username</label>
         <input style="display:none" type="text" name="username" placeholder="Please enter a username"/>
@@ -55,10 +56,12 @@
 </section>
 
 <script>
+// jlu081
     let voted1 = true;
     let msgs = [];
+//=======
+// main
     let searchString = "" // here we use a global variable
-
     const handleSearch = function() {
         searchString = document.getElementById('search_bar').value.trim().toLowerCase()
         console.log(searchString);
@@ -81,14 +84,17 @@
                 var msgJson = data;
                 var div_element = document.getElementById('display-msg');
                 div_element.innerHTML = ""
-
                 if (searchString.length > 0){
                     msgJson = msgJson.filter((jsonObject) =>
                     jsonObject.text_msg.toLowerCase().includes(searchString) 
                     || jsonObject.username.toLowerCase().includes(searchString));
                 }
+//jlu081
 
                 for(let j =0;j<msgJson.length;j++){
+//=======
+//                for(var j =0;j<msgJson.length;j++){
+// main
                     var postBox = document.createElement('div');
                     postBox.classList.add("post-box");
                     var user = document.createElement('h5');
@@ -99,6 +105,7 @@
                     //console.log(msgJson[j].date);
                     var content = document.createElement('p');
                     content.innerText = msgJson[j].text_msg;
+// jlu081
                     console.log(msgJson[j].text_msg);
                     var vote = document.createElement('p1');
                     vote.innerText = msgJson[j].vote;
@@ -111,6 +118,9 @@
                     downV.addEventListener("click", () => { downVote(msgJson[j].msg_id, msgJson[j].vote); }); 
                     var del = document.createElement("button");
                     var edit = document.createElement("button");
+//=======
+                    //console.log(msgJson[j].text_msg);
+// main
                     
                     var editBtn = document.createElement('button');
                     const link = "/" + rm_id + "/" + msgJson[j].msg_id
@@ -122,6 +132,7 @@
                         var editBtn = document.createElement('button');
                         const link = "/" + rm_id + "/" + msgJson[j].msg_id
                         editBtn.innerHTML = "<a href="+ link + ">Edit</a>"
+// jlu081
                         var del = document.createElement("button");
                         del.addEventListener("click", () => { deleteMsg(msgJson[j].msg_id) });
                         del.innerText = "DEL"
@@ -135,12 +146,16 @@
                     postBox.appendChild(downV);
                     postBox.appendChild(editBtn);
                     postBox.appendChild(del);
+//=======
+//                        postBox.appendChild(editBtn);
+//                    }
+// main
                     div_element.appendChild(postBox);
                 }
             }).catch(err =>{
                 console.log("Error when rendering rooms", err);
             });
-        }, 600);
+        }, 1000);
     })
    async function upVote(msgSelected, currVal){
        // checks if pressed

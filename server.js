@@ -245,16 +245,18 @@ app.post("/api/register", async (req, res) => {
     }
 })
 
-let redirectRoom;
-app.post("/api/editMessage", function(req, res){
+let rmId = "";
+app.post("/api/editMessage", async (req, res) => {
     const newText = req.body.new_text;
     const message = req.body.msg_id;
-    Message.findOneAndUpdate({msg_id: message}, {text_msg: newText});
-    if(req.body.room_id){
-        redirectRoom = "/" + req.body.room_id;
-    }
-    res.redirect(redirectRoom)
     
+    console.log("updating");
+    await Message.findOneAndUpdate({msg_id: message}, {text_msg: newText});
+    if(req.body.room_id){
+        console.log("rmId ", req.body.room_id)
+        rmId = '/' + req.body.room_id;
+    }
+    res.redirect(rmId);
 })
 
 // NOTE: This is the sample server.js code we provided, feel free to change the structures

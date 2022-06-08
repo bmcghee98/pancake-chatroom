@@ -20,6 +20,7 @@
     </ul>
 </div>
 <section>
+    <a id="current-user"></a>
     <h1> {{title}}: {{roomName}}</h1>
     <div class="search_block">
         <i class="fa-solid fa-magnifying-glass"><input id="search_bar" type="search" name="search" onkeyup="handleSearch()"placeholder="Search messages..."></i>
@@ -35,7 +36,7 @@
         {{/each}}
     </div>
 
-    <form class="add-post" action="/newMsg" method="POST" autocomplete="off">
+    <form class="add-post" action="/newMsg" method="POST">
     <div class="reply-item">
         <label style="display:none" for="name">Username</label>
         <input style="display:none" type="text" name="username" placeholder="Please enter a username"/>

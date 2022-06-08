@@ -101,7 +101,7 @@ app.post("/newMsg", function(req,res){
         msg_id: roomIdGenerator.roomIdGenerator(),
         room_id: req.body.room_id,
         date: moment().format("LLLL"),
-        vote: 2,
+        vote: 0,
     })
     newMessage.save().then(console.log("New Message has been added")).catch(err=>console.log("Error when creating room", err));
     res.redirect('back');
@@ -141,7 +141,7 @@ app.post("/vote/:msgId",   (req,res) => {
 
 });
 
-app.delete('/:msgId/messages', (req, res) => {
+app.delete('/messages/:msgId', (req, res) => {
     const msgId = req.params.msgId;
 
     Message.find({msg_id: req.params.msgId})

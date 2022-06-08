@@ -111,21 +111,6 @@ app.post("/newMsg", function(req,res){
     res.redirect('back');
 });
 
-/*
-//endpoint to create new profile
-app.post("/api/newProfile", function(req,res){
-    const newProfile = new Profile({
-        username: req.body.username,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        user_id: roomIdGenerator.roomIdGenerator(),
-    })
-    newProfile.save().then(console.log("New Profile has been created")).catch(err=>console.log("Error when creating new profile", err));
-    res.redirect('/login');
-});
-*/
-
 app.post("/api/change-password", async(req, res) => {
     const {token, newpassword:plainTextPassword} = req.body
 
@@ -192,15 +177,6 @@ app.post("/api/register", async (req, res) => {
     const user_id = roomIdGenerator.roomIdGenerator()
     const isLoggedIn = false;
     
-    /*
-    if (username || typeof username !== 'String'){
-        return res.json({status:"error", error:"Invalid username"})
-    }
-
-    if (!plainTextPassword || typeof plainTextPassword !== 'string'){
-        return res.json({status:"error", error:"Invalid password"})
-    }
-    */
     if (plainTextPassword.length < 4){
         return res.json({status:"error", error:"Password is too short"})
     }

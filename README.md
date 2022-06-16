@@ -4,8 +4,9 @@ A simple chat room built using Node.js, Express, Mongoose w/ MongoDB, Handlebars
 
 ## How to Run
 
-`git clone https://github.com/bmcghee98/pancake-chatroom.git` 
-`cd pancake-chatroom`
-`npm install`
-`nodemon server.js`
+```git clone https://github.com/bmcghee98/pancake-chatroom.git 
+cd pancake-chatroom
+npm install
+nodemon server.js
+```
 Go to http://localhost:3000 to view the home page

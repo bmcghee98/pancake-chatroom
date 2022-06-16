@@ -1,4 +1,4 @@
-Pancake Chatroom
+# Pancake Chatroom
 
 A simple chat room built using Node.js, Express, Mongoose w/ MongoDB, Handlebars, bcrypt, and JWT.
 

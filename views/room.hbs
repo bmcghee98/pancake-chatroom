@@ -117,9 +117,9 @@
                     postBox.appendChild(user);
                     postBox.appendChild(date);
                     postBox.appendChild(content);
-                    postBox.appendChild(upV);
-                    postBox.appendChild(vote);
-                    postBox.appendChild(downV);
+                    //postBox.appendChild(upV);
+                    //postBox.appendChild(vote);
+                    //postBox.appendChild(downV);
                     if (curr.innerHTML == msgJson[j].username){
                         var editBtn = document.createElement('button');
                         const link = "/" + rm_id + "/" + msgJson[j].msg_id
@@ -128,7 +128,7 @@
                         del.addEventListener("click", () => { deleteMsg(msgJson[j].msg_id) });
                         del.innerText = "Delete"
                         postBox.appendChild(editBtn);
-                        postBox.appendChild(del);
+                        //postBox.appendChild(del);
                     }
                     div_element.appendChild(postBox);
                 }
